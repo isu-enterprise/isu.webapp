@@ -21,14 +21,16 @@ class Entry(object):
 
 @implementer(IDocument)
 class Document(object):
-    def __init__(self, number, date):
+    def __init__(self, number, date=None):
         self.number=number
+        if date is None:
+            date=datetime.datetime.utcnow()
         self.date=date
 
 @implementer(ICreditSlip)
 class CreditSlip(Document):
-    def __init__(self, number, date):
-        super(CreditSlip, self).__init__(number, date)
+    def __init__(self, number, date=None):
+        super(CreditSlip, self).__init__(number, date=None)
         self.entries=[]
 
     def addentry(self, entry):
