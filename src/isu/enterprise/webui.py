@@ -12,7 +12,7 @@ class DefaultView(object):
 
 
 class HomeView(DefaultView):
-    title = "ACME Interprise Platform"
+    title = "ISU Enterprise Platform"
 
 
 @view_config(route_name='hello', renderer="isu.enterprise:admin-lte/index.pt")
