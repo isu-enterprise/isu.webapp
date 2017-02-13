@@ -14,6 +14,32 @@ git config --global user.name "ISU student."
 git config --global user.email "lab@irnok.net"
 ```
 
+Clone project with
+
+```bash
+git clone https://github.com/<GITHUB-USER-NAME>/isu.enterprise.git
+cd isu.enterprise
+```
+
+Substitution `<GITHUB-USER-NAME>` may be `eugeneai`.
+
+Then install required packages and make the package a package itself.
+
+```bash
+pip install -r requirements.txt
+python setup.py develop
+```
+
+Run the WEB-server
+
+```bash
+paster development.ini --reload
+```
+
+Develop something
+
+
+
 # Методический материал
 
   * Методичка по компонентной архитектуре Питона - https://github.com/eugeneai/ZCA/raw/hb/zca.pdf;
