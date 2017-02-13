@@ -39,6 +39,13 @@ def credit_slip_test(request):
 def main():
     config = Configurator()
     config.include('pyramid_chameleon')
+    # Static assets configuration
+    config.add_static_view(name='bootstrap', path='isu.enterprise:admin-lte/bootstrap')
+    config.add_static_view(name='documentation', path='isu.enterprise:admin-lte/documentation')
+    config.add_static_view(name='pages', path='isu.enterprise:admin-lte/pages')
+    config.add_static_view(name='plugins', path='isu.enterprise:admin-lte/plugins')
+    config.add_static_view(name='dist', path='isu.enterprise:admin-lte/dist')
+    # End of static assets
     config.add_route('hello', '/')
     config.add_route('credit-slip', '/CS')
     config.scan()
