@@ -1,5 +1,5 @@
 import psycopg2 as pg
-from interfaces import IStorage, IStorageAdapter, IAccountingEntry
+from isu.enterprise.interfaces import IStorage, IStorageAdapter, IAccountingEntry
 from zope.interface import implementer
 from zope.component import getGlobalSiteManager, adapter, getAdapter
 
