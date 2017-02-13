@@ -33,7 +33,7 @@ python setup.py develop
 Run the WEB-server
 
 ```bash
-paster development.ini --reload
+pserve development.ini --reload
 ```
 
 Develop something
