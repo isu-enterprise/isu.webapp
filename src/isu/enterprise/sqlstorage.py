@@ -1,5 +1,5 @@
 import psycopg2 as pg
-from isu.enterprise.interfaces import IStorage, IStorageAdapter, IAccountingEntry
+from isu.enterprise.interfaces import IStorage, IStorable, IAccountingEntry
 from zope.interface import implementer
 from zope.component import getGlobalSiteManager, adapter, getAdapter
 
@@ -66,10 +66,14 @@ class AccountingEntryToPostgresStorageAdapter:
         """)
         cur.commit()
 
-storage=PostgresStorage(host='172.16.19.20',
-    port=15432, user='acc', password='acc',
-    db='acc'
-    )
+storage=PostgresStorage(\
+                        #host='172.16.19.20',
+                        host='127.0.0.1',
+                        port=15432,
+                        user='acc',
+                        password='acc',
+                        db='acc'
+)
 
 GSM=getGlobalSiteManager()
 GSM.registerUtility(storage, name="acc")
