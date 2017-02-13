@@ -5,9 +5,19 @@ from pyramid.view import view_config
 
 from components import CreditSlip
 
-@view_config(route_name='hello', renderer='string')
+class DefaultView(object):
+    def __init__(self, model=None):
+        self.model=None
+
+class HomeView(DefaultView):
+    title="ACME Interprise Platform"
+
+@view_config(route_name='hello',
+    renderer="complatform:admin-lte/index.pt")
 def hello_world(request):
-    return 'Hello World'
+    return {"view":HomeView(),
+        "request":request,
+        "response":request.response}
 
 @view_config(route_name="credit-slip", renderer="string")
 def credit_slip_test(request):
