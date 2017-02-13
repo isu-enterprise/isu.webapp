@@ -36,8 +36,8 @@ def credit_slip_test(request):
     </p>""".format(cs)
 
 
-def main():
-    config = Configurator()
+def main(global_config, **settings):
+    config = Configurator(settings=settings)
     config.include('pyramid_chameleon')
     # Static assets configuration
     config.add_static_view(name='bootstrap', path='isu.enterprise:admin-lte/bootstrap')
@@ -50,8 +50,9 @@ def main():
     config.add_route('credit-slip', '/CS')
     config.scan()
     app = config.make_wsgi_app()
-    server = make_server('0.0.0.0', 8080, app)
-    server.serve_forever()
+    return app
+    #server = make_server('0.0.0.0', 8080, app)
+    #server.serve_forever()
 
 
 if __name__ == '__main__':

@@ -23,6 +23,9 @@ install_requires = [
     # "<package1>==0.1",
     # "<package2>==0.3.0",
     # "nose", "coverage"   # Put it here.
+    "pyramid",
+    "zope.component[zcml]",
+    "psycopg2"
 ]
 
 tests_requires = [
@@ -86,10 +89,10 @@ setup(
           'dev': dev_requires,
     },
     test_suite='tests',
-    entry_points={
-        'console_scripts':
-            ['isu.enterprise=isu.enterprise:main']
-    },
+    entry_points="""\
+        [paste.app_factory]
+        main=isu.enterprise.webui:main
+    """,
     #ext_modules = cythonize(ext_modules),
     #test_suite = 'nose.collector',
     #setup_requires=['nose>=1.0','Cython','coverage']
