@@ -1,5 +1,6 @@
-# acme-accounting-2017
-An accounting prototype with component architecture
+# An enterprise automation developing platform `isu.enterprise`
+
+An enterprise platform prototype based on component architecture
 
 Setup ISU proxy.
 ```bash
