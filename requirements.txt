@@ -3,5 +3,5 @@ zope.component[zcml]
 psycopg2
 pyramid
 chameleon
-
+pyramid_chameleon
 

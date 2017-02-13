@@ -22,6 +22,7 @@ def credit_slip_test(request):
 
 if __name__ == '__main__':
     config = Configurator()
+    config.include('pyramid_chameleon')
     config.add_route('hello', '/')
     config.add_route('credit-slip', '/CS')
     config.scan()
