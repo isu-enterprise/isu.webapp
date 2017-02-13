@@ -1,22 +1,22 @@
-from components import *
+from isu.enterprise.components import *
 from zope.component import getUtility, getAdapter
-import sqlstorage
-import unittest
+import isu.enterprise.sqlstorage
 
-class isu.enterpriseTests(unittest.TestCase):
 
+class IsuEnterpriseTests:
     def setUp(self):
         pass
 
     def test_something(self):
-        self.assertEqual(1 + 1, 2)
+        assert 1 + 1 == 2
 
     def tearDown(self):
         pass
 
+
 class TestEntryImplementation:
     def setUp(self):
-        self.e=Entry("50","71",1000)
+        self.e = Entry("50", "71", 1000)
 
     def tearDown(self):
         pass
@@ -28,14 +28,14 @@ class TestEntryImplementation:
         assert IAccountingEntry.providedBy(self.e)
 
     def test_construction(self):
-        assert self.e.cr=="50", "wrong credit account"
+        assert self.e.cr == "50", "wrong credit account"
         assert self.e.currency == 643
         assert self.e.moment is not None
 
 
 class TestStorage:
     def setUp(self):
-        self.store=getUtility(IStorage, name="acc")
+        self.store = getUtility(IStorage, name="acc")
 
     def test_conn_good(self):
         assert self.store.conn is not None
@@ -48,4 +48,3 @@ class TestPostgesStorageAdapter(TestEntryImplementation):
 
     def test_save(self):
         self.store.store(self.e)
-
