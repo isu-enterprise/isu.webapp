@@ -1,16 +1,18 @@
-import psycopg2 as pg
+import psycopg2
 from isu.enterprise.interfaces import IStorage, IStorable, IAccountingEntry
 from zope.interface import implementer
 from zope.component import getGlobalSiteManager, adapter, getAdapter
 
+
 @implementer(IStorage)
 class PostgresStorage:
+
     def __init__(self, db=None,
-        host=None,
-        port=None,
-        user=None,
-        password=None):
-        self.conn=pg.connect("""
+                 host=None,
+                 port=None,
+                 user=None,
+                 password=None):
+        self.conn = psycopg2.connect("""
             host={}
             port={}
             user={}
@@ -20,43 +22,60 @@ class PostgresStorage:
         )
 
     def store(self, obj):
-        adapted_obj=getAdapter(obj, IStorageAdapter)
+        adapted_obj = getAdapter(obj, IStorable)
         adapted_obj.store_into(self)
+
 
 @adapter(IAccountingEntry)
 @implementer(IStorable)
 class AccountingEntryToPostgresStorageAdapter:
+
     def __init__(self, obj):
-        self.obj=obj
+        self.obj = obj
 
     def store_into(self, storage):
         o = self.obj
         conn = storage.conn
-        cur = conn.cursor()
-        cur.execute("""
-            INSERT INTO entries
-                (cr, dr, amount, currency, moment)
-            VALUES
-                ("{}", "{}", "{}", {}, "{}");
-            """.format(o.cr, o.dr,
-                        o.amount, o.currency,
-                        o.moment)
-        )
-        cur.commit()
-        rc=cur.fetchone()
-        print(rc)
-        self.rc = rc
+        tries = 2
+        while tries > 0:
+            try:
+                cur = conn.cursor()
+                CMD = ("""
+                INSERT INTO acc_entries
+                    (cr, dr, amount, currency, moment)
+                VALUES
+                    ("{}", "{}", "{}", {}, "{}");
+                """.format(o.cr, o.dr,
+                           o.amount, o.currency,
+                           o.moment)
+                       )
+                cur.execute(CMD)
+                cur.commit()
+                rc = cur.fetchone()
+                print(rc)
+                self.rc = rc
+                cur.close()
+                return o
+            except psycopg2.ProgrammingError as E:
+                print(E, "\n", CMD)
+                conn.rollback()
+                cur.close()
+                self.organize(storage)
+                tries -= 1
+                print("retry", tries)
+
+        raise RuntimeError("cannot save object")
 
     def organize(self, storage):
         conn = storage.conn
         cur = conn.cursor()
         cur.execute("""
-            CREATE SEQUENCE acc_entries;
+            CREATE SEQUENCE IF NOT EXISTS acc_entries_sequence;
             """)
-        cur.commit();
+        conn.commit()
         cur.execute("""
-            CREATE TABLE entries  IF NOT EXISTS (
-                id integer PRIMARY KEY DEFAULT nextval('acc_entries'),
+            CREATE TABLE  IF NOT EXISTS acc_entries (
+                id integer PRIMARY KEY DEFAULT nextval('acc_entries_sequence'),
                 cr varchar(10),
                 dr varchar(10),
                 amount numeric(4),
@@ -64,17 +83,18 @@ class AccountingEntryToPostgresStorageAdapter:
                 moment timestamp
             )
         """)
-        cur.commit()
+        conn.commit()
+        cur.close()
 
-storage=PostgresStorage(\
-                        #host='172.16.19.20',
-                        host='127.0.0.1',
-                        port=15432,
-                        user='acc',
-                        password='acc',
-                        db='acc'
+storage = PostgresStorage(\
+    # host='172.16.19.20',
+    host='127.0.0.1',
+    port=15432,
+    user='acc',
+    password='acc',
+    db='acc'
 )
 
-GSM=getGlobalSiteManager()
+GSM = getGlobalSiteManager()
 GSM.registerUtility(storage, name="acc")
-GSM.registerAdapter(EntryToPostgresStorageAdapter)
+GSM.registerAdapter(AccountingEntryToPostgresStorageAdapter)
