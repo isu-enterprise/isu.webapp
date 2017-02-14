@@ -40,20 +40,23 @@ class AccountingEntryToPostgresStorageAdapter:
         while tries > 0:
             try:
                 cur = conn.cursor()
-                CMD = ("""
-                INSERT INTO acc_entries
-                    (cr, dr, amount, currency, moment)
-                VALUES
-                    ("{}", "{}", "{}", {}, "{}");
-                """.format(o.cr, o.dr,
-                           o.amount, o.currency,
-                           o.moment)
-                       )
-                cur.execute(CMD)
-                cur.commit()
-                rc = cur.fetchone()
-                print(rc)
-                self.rc = rc
+                CMD = \
+                    """
+                    INSERT INTO acc_entries
+                        (cr, dr, amount, currency, moment)
+                    VALUES
+                        (%s, %s, %s, %s, %s)
+                    RETURNING id;
+                """
+                cur.execute(CMD, (o.cr,
+                                  o.dr,
+                                  o.amount,
+                                  o.currency,
+                                  o.moment))
+                _id = cur.fetchone()[0]
+                conn.commit()
+                # print(_id)
+                self.rc = _id
                 cur.close()
                 return o
             except psycopg2.ProgrammingError as E:
@@ -74,7 +77,7 @@ class AccountingEntryToPostgresStorageAdapter:
             """)
         conn.commit()
         cur.execute("""
-            CREATE TABLE  IF NOT EXISTS acc_entries (
+            CREATE TABLE IF NOT EXISTS acc_entries (
                 id integer PRIMARY KEY DEFAULT nextval('acc_entries_sequence'),
                 cr varchar(10),
                 dr varchar(10),
