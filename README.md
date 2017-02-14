@@ -38,7 +38,46 @@ pserve development.ini --reload
 
 Develop something
 
+## Creating PostreSQL storage
 
+Хранилище инсталлируется множеством способов, но один из удобных - это
+устанавливать его в Linux в системе виртуальных машин Docker.
+
+```bash
+docker run --name generic-postgres -e POSTGRES_PASSWORD=<Пароль суперпользователя> \
+           -p 15432:5432 -d --restart always postgres
+```
+
+Здесь `<Пароль суперпользователя>` - пароль, который задаете вы, он вам понадобиться для
+подключения к серверу `PostreSQL` суперпользователем `postgres`.
+
+Затем, если у вас есть утилита `psql` набираем `CREATE`- и `GRANT` - команды. Перед подключением
+`psql` затребует ввод пароля.
+
+```bash
+$ psql -h 127.0.0.1 -U postgres -p 15432
+Password for user postgres:
+psql (9.6.1, server 9.6.2)
+Type "help" for help.
+
+postgres=# CREATE USER acc WITH PASSWORD 'acc';
+postgres=# CREATE DATABASE acc;
+postgres=# GRANT ALL PRIVILEGES ON DATABASE acc TO acc;
+postgres=# \q
+```
+Теперь надо проверить результат создания базы данных `acc` и пользователя
+`acc` - администратора этой базы.  Его пароль - `acc`.
+
+```bash
+$ psql -h 127.0.0.1 -U acc -p 15432 acc
+Password for user acc:
+psql (9.6.1, server 9.6.2)
+Type "help" for help.
+
+acc=> \q
+```
+В командной строке `-U acc` - указание пользователя, а последний `acc` - имя базы данных.
+Если `psql` выдал `acc=>`, то значит все сработало.
 
 # Методический материал
 
