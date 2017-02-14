@@ -84,7 +84,7 @@ class AccountingEntryToPostgresStorageAdapter:
                 amount numeric(4),
                 currency integer,
                 moment timestamp
-            )
+            );
         """)
         conn.commit()
         cur.close()
