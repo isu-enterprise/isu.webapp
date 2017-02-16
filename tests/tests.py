@@ -1,9 +1,11 @@
+from isu.enterprise.configurator import createConfigurator
+createConfigurator(ini='tests.ini', name='')
+
 from isu.enterprise.components import *
 from zope.component import getUtility, getAdapter
 import isu.enterprise.sqlstorage
 from nose.tools import nottest
 from nose.plugins.skip import Skip
-
 class IsuEnterpriseTests:
     def setUp(self):
         pass

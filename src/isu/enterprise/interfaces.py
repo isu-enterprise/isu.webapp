@@ -52,3 +52,7 @@ class IStorable(Interface):
         into the storage
         """
 
+class IConfigurator(Interface):
+    """Interface defines an object, which
+    is a configurator of platform.
+    """

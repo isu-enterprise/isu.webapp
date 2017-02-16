@@ -59,7 +59,7 @@ ext_modules=[
 setup(
     name='isu.enterprise',
     version=version,
-    description="A Component Enterprise development platform",
+    description="A Component Enterprise Development Platform",
     long_description=README + '\n\n' + NEWS,
     # Get classifiers from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     # classifiers=[c.strip() for c in """
@@ -75,7 +75,7 @@ setup(
     keywords='ZCA enterprise',
     author='Evgeny Cherkashin',
     author_email='eugeneai@irnok.net',
-    url='https://github.com/eugeneai/acme-accounting-2017',
+    url='https://github.com/eugeneai/isu.enterprise',
     license='GPL>=2',
     packages=find_packages("src"),
     package_dir = {'': "src"},
