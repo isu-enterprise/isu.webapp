@@ -50,3 +50,16 @@ class TestPostgesStorageAdapter(TestEntryImplementation):
 
     def test_save(self):
         self.store.store(self.e)
+        assert hasattr(self.e, "__sql_id__")
+        sql_id = self.e.__sql_id__
+        assert sql_id>0
+        self.e.dr="51"
+        self.store.store(self.e)
+        assert sql_id==self.e.__sql_id__
+
+    def test_load(self):
+        self.store.store(self.e)
+        id = self.e.__sql_id__
+        e = self.store.load(klass=Entry, id=id)
+        assert e.cr==self.e.cr
+
