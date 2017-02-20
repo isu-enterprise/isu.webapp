@@ -4,4 +4,7 @@ psycopg2
 pyramid
 chameleon
 pyramid_chameleon
-
+pyflakes
+jedi
+pep8
+yapf
