@@ -1,6 +1,10 @@
 from isu.enterprise.interfaces import IConfigurator
 from zope.component import getGlobalSiteManager
-from configparser import ConfigParser, ExtendedInterpolation
+import sys
+if sys.version_info.major>2:
+    from configparser import ConfigParser, ExtendedInterpolation
+else:
+    from ConfigParser import ConfigParser #, ExtendedInterpolation
 import os
 
 def registerConfigurator(obj, registry=None, name=""):
@@ -11,8 +15,9 @@ def registerConfigurator(obj, registry=None, name=""):
         name=name)
 
 def createConfigurator(ini, registry=None, name=""):
-    conf = ConfigParser(defaults=os.environ,
-        interpolation=ExtendedInterpolation())
+    conf = ConfigParser(defaults=os.environ #,
+        #interpolation=ExtendedInterpolation()
+        )
     conf.read(ini)
     registerConfigurator(conf, registry=registry, name=name)
 

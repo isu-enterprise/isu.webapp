@@ -1,2 +1,2 @@
 @echo off
-c:\py27\Scripts\python.exe ../isu/enterprise/webui.py
+c:\py27\Scripts\python.exe ../src/isu/enterprise/webui.py

@@ -31,8 +31,9 @@ class Document(object):
 
 @implementer(ICreditSlip)
 class CreditSlip(Document):
-    def __init__(self, number, date=None):
+    def __init__(self, number, reason, date=None):
         super(CreditSlip, self).__init__(number, date=None)
+        self.reason = reason
         self.entries = []
 
     def addentry(self, entry):
