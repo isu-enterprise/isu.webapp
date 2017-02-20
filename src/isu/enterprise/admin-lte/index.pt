@@ -1,8 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html
+      xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+   i18n:domain="icc.cellula"
+   metal:define-macro="page"
+>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,6 +37,8 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+  <!-- Our intrusion -->
+  <link rel="stylesheet" href="dist/css/cellula.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -39,13 +46,18 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+  <link tal:condition="view.links | nothing" tal.replace="structure view.links"/>
+  <style tal:condition="view.style | nothing"
+         tal:content="structure view.style"></style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="index2.html"
+       tal:attributes="href request.route_url('home')"
+       class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>LT</span>
       <!-- logo for regular state and mobile devices -->
@@ -255,6 +267,7 @@
           </li>
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
+            <span tal:omit-tag="" tal:condition="view.auth_user|default">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
               <span class="hidden-xs">Alexander Pierce</span>
@@ -265,8 +278,11 @@
                 <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  <span tal:replace="view.auth_user_name | default"
+                        >Alexander Pierce</span>
+                  - <span tal:replace="view.auth_user_role | default"
+                          >Web Developer</span>
+                  <small>Member since Jan. 2016</small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -287,16 +303,22 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="#" class="btn btn-default btn-flat"
+                     i18n:translate=''
+                     tal:attributes="href request.route_url('profile') | default "
+                     >Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="#" class="btn btn-default btn-flat"
+                     i18n:translate=''
+                     tal:attributes="href request.route_url('logout')|default"
+                     >Sign out</a>
                 </div>
               </li>
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
-          <li>
+          <li tal:condition="nothing">
             <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
           </li>
         </ul>
@@ -308,7 +330,7 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- Sidebar user panel -->
-      <div class="user-panel">
+      <div class="user-panel" tal:condition='nothing'>
         <div class="pull-left image">
           <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
@@ -330,19 +352,24 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="header">MAIN NAVIGATION</li>
+        <li class="header" tal:condition="nothing">MAIN
+          NAVIGATION</li>
+        <span tal:repeat="sb_item view.panel_items | []" tal:omit-tag=''>
         <li class="active treeview">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+          <a href="#" tal:attributes="href sb_item.URL">
+            <i class="fa fa-dashboard"
+               tal:attributes="class string:fa ${sb_item.icon}"
+               ></i>
+            <span tal:replace="sb_item.name">Dashboard</span>
+            <i class="fa fa-angle-left pull-right" tal:condition='nothing'></i>
           </a>
-          <ul class="treeview-menu">
+          <ul class="treeview-menu" tal:condition="nothing" tal:condition='nothing'>
             <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
             <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
           </ul>
         </li>
+        </span>
+        <tal:block tal:condition="nothing">
         <li class="treeview">
           <a href="#">
             <i class="fa fa-files-o"></i>
@@ -499,6 +526,7 @@
         <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+        </tal:block>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -508,19 +536,25 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+      <h1 tal:content="view.title">
         Dashboard
         <small>Control panel for</small>
         <span tal:replace="view.title">Name of the application</span>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
+        <li class="active">
+          <a
+             tal:attributes="href view.route_url | default"
+             tal:content="view.title">Dashboard</a>
+        </li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
+      <tal:block metal:define-slot="content"
+                     tal:replace="structure view.body | default">
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-lg-3 col-xs-6">
@@ -1013,6 +1047,7 @@
       </div>
       <!-- /.row (main row) -->
 
+      </tal:block>
     </section>
     <!-- /.content -->
   </div>
@@ -1258,5 +1293,16 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+    <script tal:condition="view.tail_script | nothing"
+            tal:content="structure view.tail_script"
+            type="text/javascript">
+    </script>
+    <span tal:omit-tag="" tal:repeat="script view.include_scripts | []">
+      <script type="text/javascript" src=""
+              tal:attributes="type string:text/${script[0]};
+                              src string:script/${script[1]}"></script>
+    </span>
+    <tal:block metal:define-slot="script-src">
+    </tal:block>
 </body>
 </html>
