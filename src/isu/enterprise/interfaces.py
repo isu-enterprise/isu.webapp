@@ -1,9 +1,12 @@
 # encoding:utf-8
 from zope.interface import Interface, Attribute
+import zope.schema
 
 # Implementation - реализация
 # Provide - обеспечить, **обслуживать**, оснащать.
 
+def _N(x):
+    return x
 
 class IAccountingEntry(Interface):
     cr=Attribute("Credit account")
@@ -28,13 +31,20 @@ class IDocument(Interface):
         """
 
 class ICreditSlip(IDocument):
-        """Приходный ордер
+    """Приходный ордер
+    """
+
+    reason=zope.schema.TextLine(\
+        title=_N(u"Reason"),
+        description=_N(u"The reason of the peration to be conducted."),
+        required = True
+        )
+
+    def addentry(entry):
         """
-        def addentry(entry):
-            """
-            Adds an accounting
-            entry in the credit slip.
-            """
+        Adds an accounting
+        entry in the credit slip.
+        """
 
 class IStorage(Interface):
     def store(document):
