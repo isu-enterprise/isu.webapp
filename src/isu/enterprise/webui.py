@@ -30,7 +30,7 @@ class HomeView(DefaultView):
     title = _N("ISU Enterprise Platform")
 
 
-@view_config(route_name='home', renderer="isu.enterprise:admin-lte/index.pt")
+@view_config(route_name='home', renderer="isu.enterprise:templates/index.pt")
 def hello_world(request):
     return {
         "view": HomeView(),
@@ -44,40 +44,14 @@ def hello_world(request):
 class CreditSlipView(DefaultView):
     title = _N("Credit Slip")
     body = "<strong>11111</strong>"
-    style_css = """
-        /* Font Definitions */
-        @font-face {
-            font-family:Calibri;
-            panose-1:2 15 5 2 2 2 4 3 2 4;
-        }
-        /* Style Definitions */
-        p.MsoNormal, li.MsoNormal, div.MsoNormal {
-            margin:0cm;
-            margin-bottom:.0001pt;
-            text-autospace:none;
-            font-size:10.0pt;
-            font-family:"Times New Roman","serif";
-        }
-        .MsoChpDefault {
-             font-size:10.0pt;
-             font-family:"Calibri","sans-serif";
-        }
-        @page WordSection1 {
-             size:595.3pt 841.9pt;
-             margin:1.0cm 1.0cm 1.0cm 1.0cm;
-        }
-        div.WordSection1 {
-             page:WordSection1;
-        }
-
-    """
+    style_css = """"""
 
     @property
     def date(self):
         return str(self.model.date).split(" ")[0]
 
 
-@view_config(route_name="credit-slip", renderer="isu.enterprise:admin-lte/credit-slip.pt")
+@view_config(route_name="credit-slip", renderer="isu.enterprise:templates/credit-slip.pt")
 def credit_slip_test(request):
     cs = CreditSlip(42, reason="Зарплата директору")
     #response = request.response
@@ -108,6 +82,8 @@ def main(global_config, **settings):
     # End of static assets
     config.add_route('home', '/')
     config.add_route('credit-slip', '/CS')
+    config.add_subscriber('isu.enterprise.subscribers.add_base_template',
+                          'pyramid.events.BeforeRender')
     config.scan()
     app = config.make_wsgi_app()
     return app
