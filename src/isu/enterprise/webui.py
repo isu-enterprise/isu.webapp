@@ -4,7 +4,7 @@ from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.view import view_config
 
-from icc.modelview.interfaces import IView
+from icc.mvw.interfaces import IView
 from isu.enterprise.interfaces import ICreditSlip
 from zope.interface import implementer
 from zope.component import adapter
