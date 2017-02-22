@@ -21,16 +21,26 @@ git clone https://github.com/<GITHUB-USER-NAME>/isu.enterprise.git
 cd isu.enterprise
 ```
 
-Substitution `<GITHUB-USER-NAME>` may be `eugeneai`.
-
-Then install required packages and make the package a package itself.
+Substitution `<GITHUB-USER-NAME>` may be `eugeneai` or `isu-enterprise`.
+In doubts, just clone this one
 
 ```bash
-pip install -r requirements.txt
+git clone https://github.com/isu-enterprise/isu.enterprise.git
+cd isu.enterprise
+```
+
+Then install required packages **in development mode** and make the
+package a package itself.
+
+```bash
+pip install -r requirements-devel.txt --src ..
 python setup.py develop
 ```
 
-Run the WEB-server
+Here `--src <directory>` is where sources of subpackages will be located.
+In this case they will be located in the same directory as `isu.enterprise`.
+
+Run the WEB-server, but it will not start if a storage is not set up.
 
 ```bash
 pserve development.ini --reload
