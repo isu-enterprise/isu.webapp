@@ -1,5 +1,6 @@
 nose
 zope.component[zcml]
+zope.i18nmessageid
 psycopg2
 pyramid
 chameleon
