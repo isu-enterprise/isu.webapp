@@ -5,10 +5,6 @@ psycopg2
 pyramid
 chameleon
 pyramid_chameleon
-pyflakes
-jedi
-pep8
-yapf
 -e git+https://github.com/isu-enterprise/isu.alchemy#egg=isu.alchemy
 -e git+https://github.com/isu-enterprise/isu.gui.gtk#egg=isu.onece
 -e git+https://github.com/eugeneai/icc.mvw#egg=icc.mvw
