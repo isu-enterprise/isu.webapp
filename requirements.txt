@@ -5,3 +5,4 @@ psycopg2
 pyramid
 chameleon
 pyramid_chameleon
+pyramid_zcml

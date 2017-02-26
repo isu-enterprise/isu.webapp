@@ -69,6 +69,8 @@ def credit_slip_test(request):
 
 def main(global_config, **settings):
     config = Configurator(settings=settings)
+    config.include('pyramid_zcml')
+    config.load_zcml('isu.enterprise:configure.zcml')
     config.include('pyramid_chameleon')
     # Static assets configuration
     config.add_static_view(
