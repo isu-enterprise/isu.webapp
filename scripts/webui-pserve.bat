@@ -1,4 +1,4 @@
 @echo off
 cd ..
-c:\py27\Scripts\pserve.exe development.ini --reload
+c:\py35\Scripts\pserve.exe development.ini --reload
 
