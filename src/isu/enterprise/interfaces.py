@@ -1,7 +1,8 @@
 # encoding:utf-8
-from zope.interface import Interface, Attribute
+from zope.interface import Interface, Attribute, implementer, directlyProvides
 from zope.i18nmessageid import MessageFactory
 import zope.schema
+import enum # FIXME: Оформит словари в отделный подмодуль.
 
 # Implementation - реализация
 # Provide - обеспечить, **обслуживать**, оснащать.
@@ -17,6 +18,12 @@ class IAccountingEntry(Interface):
     currency = Attribute("A currency id")
     moment = Attribute("A DateTime moment of the entry")
 
+class IncludingEnum(enum.Enum):
+    with_VAT    = 1
+    without_VAT = 0
+
+directlyProvides(IncludingEnum,
+    zope.schema.interfaces.IBaseVocabulary)
 
 class IDocument(Interface):
     number = zope.schema.TextLine(
@@ -51,7 +58,6 @@ class IDocument(Interface):
         and create a set of accounting entries.
         """
 
-
 class ICreditSlip(IDocument):
     """Приходный ордер
     """
@@ -62,12 +68,62 @@ class ICreditSlip(IDocument):
         required=True,
     )
 
+    contractor=zope.schema.TextLine(
+        title=_(u"Contractor"),
+        description=_(u"The contractor giving money."),
+        required=True
+        #validator=lambda x: x.strip()
+    )
+
+    including = zope.schema.Choice(
+        title=_(u"Including"),
+        description=_(u"The additional circunstances accompanying the document."),
+        required=True,
+        vocabulary=IncludingEnum
+    )
+    #~ including = zope.schema.TextLine(
+        #~ title=_(u"Including"),
+        #~ description=_(u"The additional circunstances accompanying the document."),
+        #~ required=False
+    #~ )
+
+    appendix = zope.schema.TextLine(
+        title=_(u"Appendix"),
+        description=_(u"The appendix of the document."),
+        required=False
+    )
+
+    entries = zope.schema.List(
+        title=_(u"Entries"),
+        description=_(u"The entry list providing the credit slip"),
+        required=True
+    )
+
     def addentry(entry):
         """
         Adds an accounting
         entry in the credit slip.
         """
 
+class IContractor(Interface):
+    """The interface describes a person or
+    company that undertakes a contract
+    to provide materials or labor
+    to perform a service or do a job.
+    -- (c) Google
+    """
+    name = zope.schema.TextLine(
+        title=_(u"name"),
+        description=_(u"Name of the contractor."),
+        required=True
+    )
+
+class IOrganization(IContractor):
+    """
+    """
+
+class ISubdivision(IOrganization):
+    pass
 
 class IStorage(Interface):
 
