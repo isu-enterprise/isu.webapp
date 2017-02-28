@@ -31,10 +31,10 @@ class Document(object):
 
 @implementer(ICreditSlip)
 class CreditSlip(Document):
-    def __init__(self, number, date=None):
+    def __init__(self, number, reason='', date=None):
         super(CreditSlip, self).__init__(number, date=None)
         self.entries = []
-        self.reason = ''
+        self.reason = reason
         self.contractor= ''
         self.including = ''
         self.appendix  = ''
