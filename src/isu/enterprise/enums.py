@@ -2,6 +2,7 @@ from zope.schema.interfaces import IVocabularyTokenized
 from zope.schema.interfaces import ITokenizedTerm
 from zope.interface import implementer, classImplements
 from collections import namedtuple
+from zope.schema.vocabulary import getVocabularyRegistry
 #from zope.i18nmessageid import MessageFactory
 #_ = MessageFactory("isu.college")
 
@@ -10,12 +11,20 @@ classImplements(EnumTerm, ITokenizedTerm)
 
 
 @implementer(IVocabularyTokenized)
-class vocabulary(object):
+class Vocabulary(object):
 
     def __init__(self, enum):
+
         self.enum = enum
         self.terms = {item[1]: EnumTerm._make(item)
                       for item in enum.__members__.items()}
+        enum.vocabulary = self
+
+    def __call__(self, object):
+        """Return myself as a factory execution result
+        independent from content object
+        """
+        return self
 
     def __iter__(self):
         yield from self.terms.values()
@@ -41,3 +50,23 @@ class vocabulary(object):
             return self.terms[value]
         except KeyError:
             raise LookupError("wrong token")
+
+
+class vocabulary(object):
+    """Registers a vocabulary provider for a enum under
+    name
+    """
+
+    def __init__(self, name=None):
+        self.name = name
+
+    def __call__(self, enum):
+        name = self.name
+        if name is None:
+            name = enum.__class__.__name__
+
+        vocab = Vocabulary(enum)
+        registry = getVocabularyRegistry()
+        registry.register(name, vocab)
+
+        return enum
