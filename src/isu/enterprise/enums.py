@@ -61,12 +61,15 @@ class vocabulary(object):
         self.name = name
 
     def __call__(self, enum):
-        name = self.name
-        if name is None:
-            name = enum.__class__.__name__
+        """If a name was supplied then
+        register the enum's vocabulary in
+        global vocabulary registry
+        """
 
         vocab = Vocabulary(enum)
-        registry = getVocabularyRegistry()
-        registry.register(name, vocab)
+        name = self.name
+        if name is not None:
+            registry = getVocabularyRegistry()
+            registry.register(name, vocab)
 
         return enum
