@@ -12,16 +12,16 @@ classImplements(EnumTerm, ITokenizedTerm)
 @implementer(IVocabularyTokenized)
 class vocabulary(object):
 
-    def __init__(self, context):
-        self.context = context
+    def __init__(self, enum):
+        self.enum = enum
         self.terms = {item[1]: EnumTerm._make(item)
-                      for item in context.__members__.items()}
+                      for item in enum.__members__.items()}
 
     def __iter__(self):
         yield from self.terms.values()
 
     def __len__(self):
-        return len(self.context)
+        return len(self.enum)
 
     def getTerm(self, value):
         try:
@@ -37,7 +37,7 @@ class vocabulary(object):
 
     def getTermByToken(self, token):
         try:
-            value = self.context.__members__[token]
+            value = self.enum.__members__[token]
             return self.terms[value]
         except KeyError:
             raise LookupError("wrong token")
