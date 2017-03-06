@@ -59,6 +59,9 @@ class CreditSlipView(DefaultView):
 @adapter(IVocabulary)
 class VocabularyEditorView(DefaultView):
     title = _N("Vocabulary editor")
+    @property
+    def terms(self):
+        return self.context.terms
 
 GSM.registerAdapter(VocabularyEditorView)
 
@@ -80,11 +83,11 @@ def credit_slip_test(request):
     renderer="isu.enterprise:templates/vocabulary-editor.pt")
 def vocabulary_editor(request):
     vocab= Commondities(factory_name='commondity')
-    vocab.append(createObject('commondity',1, "Air"))
-    vocab.append(createObject('commondity',2, "Water"))
-    vocab.append(createObject('commondity',3, "Soil"))
-    vocab.append(createObject('commondity',4, "Fire"))
-    vocab.append(createObject('commondity',5, "Star"))
+    vocab.append(createObject('commondity',10, "Air"))
+    vocab.append(createObject('commondity',23, "Water"))
+    vocab.append(createObject('commondity',34, "Soil"))
+    vocab.append(createObject('commondity',42, "Fire"))
+    vocab.append(createObject('commondity',54, "Star"))
     view = IView(vocab)
     return {
         "view": view,
