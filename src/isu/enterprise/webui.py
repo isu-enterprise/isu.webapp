@@ -6,11 +6,16 @@ from pyramid.view import view_config
 
 from icc.mvw.interfaces import IView
 from isu.enterprise.interfaces import ICreditSlip
+from isu.onece.interfaces import IVocabularyItem
 from zope.interface import implementer
-from zope.component import adapter
+from zope.component import adapter, getGlobalSiteManager, createObject
 
 from isu.enterprise.components import CreditSlip
 from isu.enterprise.configurator import createConfigurator
+
+
+from isu.onece.org.components import Commondities
+from isu.onece.interfaces import IVocabularyItem, IVocabulary
 
 createConfigurator("development.ini")
 
@@ -18,12 +23,13 @@ createConfigurator("development.ini")
 def _N(x):
     return x
 
+GSM = getGlobalSiteManager()
 
 @implementer(IView)
 class DefaultView(object):
 
-    def __init__(self, model=None):
-        self.model = model
+    def __init__(self, context=None):
+        self.context = context
 
 
 class HomeView(DefaultView):
@@ -48,12 +54,13 @@ class CreditSlipView(DefaultView):
 
     @property
     def date(self):
-        return str(self.model.date).split(" ")[0]
+        return str(self.context.date).split(" ")[0]
 
+@adapter(IVocabulary)
 class VocabularyEditorView(DefaultView):
     title = _N("Vocabulary editor")
 
-
+GSM.registerAdapter(VocabularyEditorView)
 
 @view_config(route_name="credit-slip", renderer="isu.enterprise:templates/credit-slip.pt")
 def credit_slip_test(request):
@@ -72,8 +79,13 @@ def credit_slip_test(request):
 @view_config(route_name="vocabulary-editor",
     renderer="isu.enterprise:templates/vocabulary-editor.pt")
 def vocabulary_editor(request):
-    vocab=object()
-    view = VocabularyEditorView(vocab)
+    vocab= Commondities(factory_name='commondity')
+    vocab.append(createObject('commondity',1, "Air"))
+    vocab.append(createObject('commondity',2, "Water"))
+    vocab.append(createObject('commondity',3, "Soil"))
+    vocab.append(createObject('commondity',4, "Fire"))
+    vocab.append(createObject('commondity',5, "Star"))
+    view = IView(vocab)
     return {
         "view": view,
         "request": request,
