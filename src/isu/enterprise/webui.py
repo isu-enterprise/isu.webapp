@@ -50,6 +50,10 @@ class CreditSlipView(DefaultView):
     def date(self):
         return str(self.model.date).split(" ")[0]
 
+class VocabularyEditorView(DefaultView):
+    title = _N("Vocabulary editor")
+
+
 
 @view_config(route_name="credit-slip", renderer="isu.enterprise:templates/credit-slip.pt")
 def credit_slip_test(request):
@@ -62,10 +66,21 @@ def credit_slip_test(request):
         "request": request,
         "response": request.response,
         "context": cs,
-        "model": cs,
         "default": True
     }
 
+@view_config(route_name="vocabulary-editor",
+    renderer="isu.enterprise:templates/vocabulary-editor.pt")
+def vocabulary_editor(request):
+    vocab=object()
+    view = VocabularyEditorView(vocab)
+    return {
+        "view": view,
+        "request": request,
+        "response": request.response,
+        "context": vocab,
+        "default": True
+    }
 
 def main(global_config, **settings):
     config = Configurator(settings=settings)
@@ -82,6 +97,7 @@ def main(global_config, **settings):
     # End of static assets
     config.add_route('home', '/')
     config.add_route('credit-slip', '/CS')
+    config.add_route('vocabulary-editor', '/VE')
     config.add_subscriber('isu.enterprise.subscribers.add_base_template',
                           'pyramid.events.BeforeRender')
     config.scan()
