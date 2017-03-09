@@ -6,11 +6,16 @@ from pyramid.view import view_config
 
 from icc.mvw.interfaces import IView
 from isu.enterprise.interfaces import ICreditSlip
+from isu.onece.interfaces import IVocabularyItem
 from zope.interface import implementer
-from zope.component import adapter
+from zope.component import adapter, getGlobalSiteManager, createObject
 
 from isu.enterprise.components import CreditSlip
 from isu.enterprise.configurator import createConfigurator
+
+
+from isu.onece.org.components import Commondities
+from isu.onece.interfaces import IVocabularyItem, IVocabulary
 
 createConfigurator("development.ini")
 
@@ -18,12 +23,13 @@ createConfigurator("development.ini")
 def _N(x):
     return x
 
+GSM = getGlobalSiteManager()
 
 @implementer(IView)
 class DefaultView(object):
 
-    def __init__(self, model=None):
-        self.model = model
+    def __init__(self, context=None):
+        self.context = context
 
 
 class HomeView(DefaultView):
@@ -48,8 +54,16 @@ class CreditSlipView(DefaultView):
 
     @property
     def date(self):
-        return str(self.model.date).split(" ")[0]
+        return str(self.context.date).split(" ")[0]
 
+@adapter(IVocabulary)
+class VocabularyEditorView(DefaultView):
+    title = _N("Vocabulary editor")
+    @property
+    def terms(self):
+        return self.context.terms
+
+GSM.registerAdapter(VocabularyEditorView)
 
 @view_config(route_name="credit-slip", renderer="isu.enterprise:templates/credit-slip.pt")
 def credit_slip_test(request):
@@ -62,10 +76,26 @@ def credit_slip_test(request):
         "request": request,
         "response": request.response,
         "context": cs,
-        "model": cs,
         "default": True
     }
 
+@view_config(route_name="vocabulary-editor",
+    renderer="isu.enterprise:templates/vocabulary-editor.pt")
+def vocabulary_editor(request):
+    vocab= Commondities(factory_name='commondity')
+    vocab.append(createObject('commondity',10, "Air"))
+    vocab.append(createObject('commondity',23, "Water"))
+    vocab.append(createObject('commondity',34, "Soil"))
+    vocab.append(createObject('commondity',42, "Fire"))
+    vocab.append(createObject('commondity',54, "Star"))
+    view = IView(vocab)
+    return {
+        "view": view,
+        "request": request,
+        "response": request.response,
+        "context": vocab,
+        "default": True
+    }
 
 def main(global_config, **settings):
     config = Configurator(settings=settings)
@@ -84,6 +114,7 @@ def main(global_config, **settings):
     # End of static assets
     config.add_route('home', '/')
     config.add_route('credit-slip', '/CS')
+    config.add_route('vocabulary-editor', '/VE')
     config.add_subscriber('isu.enterprise.subscribers.add_base_template',
                           'pyramid.events.BeforeRender')
     config.scan()
