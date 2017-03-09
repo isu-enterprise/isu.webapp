@@ -1,4 +1,9 @@
-from isu.enterprise.interfaces import IAccountingEntry, IDocument, IStorage, ICreditSlip
+from isu.enterprise.interfaces import (
+    IAccountingEntry,
+    IDocument,
+    IStorage,
+    ICreditSlip
+)
 from zope.interface import implementer
 import datetime
 
@@ -9,6 +14,7 @@ EUR = 810
 
 @implementer(IAccountingEntry)
 class Entry(object):
+
     def __init__(self, cr, dr, amount, currency=None, moment=None):
         self.cr = cr
         self.dr = dr
@@ -22,6 +28,7 @@ class Entry(object):
 
 @implementer(IDocument)
 class Document(object):
+
     def __init__(self, number, date=None):
         self.number = number
         if date is None:
@@ -31,13 +38,14 @@ class Document(object):
 
 @implementer(ICreditSlip)
 class CreditSlip(Document):
+
     def __init__(self, number, reason='', date=None):
         super(CreditSlip, self).__init__(number, date=None)
         self.entries = []
         self.reason = reason
-        self.contractor= ''
+        self.contractor = ''
         self.including = ''
-        self.appendix  = ''
+        self.appendix = ''
 
     def addentry(self, entry):
         self.entries.append(entry)
