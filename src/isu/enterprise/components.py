@@ -35,9 +35,9 @@ class CreditSlip(Document):
         super(CreditSlip, self).__init__(number, date=None)
         self.entries = []
         self.reason = ''
-        self.contractor= ''
+        self.contractor = ''
         self.including = ''
-        self.appendix  = ''
+        self.appendix = ''
 
     def addentry(self, entry):
         self.entries.append(entry)
