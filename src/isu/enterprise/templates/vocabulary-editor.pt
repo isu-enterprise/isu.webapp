@@ -102,19 +102,19 @@
                     Editing the vocabulary item
                 </div>
                 <div class="panel-body">
-                    <button id="form-update-btn" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></button>
-                        <div class="form-group row">
-                            <label for="id-input" class="col-2 col-form-label">Code</label>
-                            <div class="col-10">
-                                <input class="form-control" type="text" value="Code 1" id="id-input">
-                            </div>
+                    <button id="form-update-btn" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"/></button>
+                    <div class="form-group row">
+                        <label for="id-input" class="col-2 col-form-label">Code</label>
+                        <div class="col-10">
+                            <input class="form-control" type="text" value="Code 1" id="id-input">
                         </div>
-                        <div class="form-group row">
-                            <label for="name-input" class="col-2 col-form-label">Search</label>
-                            <div class="col-10">
-                                <input class="form-control" type="search" value="Some wonderful name" id="name-input">
-                            </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="name-input" class="col-2 col-form-label">Search</label>
+                        <div class="col-10">
+                            <input class="form-control" type="search" value="Some wonderful name" id="name-input">
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
