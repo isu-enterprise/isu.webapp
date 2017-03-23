@@ -16,12 +16,30 @@
             }
           */
          .simple_table {
-             margin: 1em;
-             width: 75%;
+             /* margin: 1em; */
+             width: 100%;
          }
 
          .hidden {
              display: none;
+         }
+
+         .vocabpanel {
+             width: 40%;
+             max-width: 40%;
+         }
+
+         .vocabtable {
+             width: 60%;
+         }
+
+         .left {
+             float: left;
+             /* background-color: yellow; */
+         }
+         .right {
+             float: right;
+             /* background-color: green; */
          }
         </style>
     </tal:block>
@@ -30,77 +48,62 @@
             Factory name :
             <span tal:content="context.factory_name"></span><br/>
         </div>
-        <table class="table table-striped simple_table" id="vocabulary-editor">
-            <thead>
-                <tr>
-                    <th class="hidden">#</th>
-                    <th>id</th>
-                    <th>name</th>
-                    <th>&nbsp;</th>
-                </tr>
-            </thead>
-            <tbody id="insertion-point">
-                <tr tal:repeat="term view.terms"
-                    tal:attributes="id view.uuid(term)"
-                >
-                    <td tal:content="repeat['term'].number" class="hidden">N</td>
-                    <td
-                        tal:content="term.id"
-                        tal:attributes="id term.id"
-                    >id</td>
-                    <td tal:content="term.name">name</td>
-                    <td><button class="btn btn-primary isu-delete-btn"> Delete </button>
-                        <button class="btn btn-primary isu-edit-btn"> Edit </button></td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary"
-                    id="add-button">Add</button>
+        <div class="left vocabtable">
+            <table class="table table-striped simple_table"
+                   id="vocabulary-editor"
+                   data-uuid="000000-000-000-00000"
+                   tal:attributes="data-uuid view.uuid"
+            >
+                <thead>
+                    <tr>
+                        <th class="hidden">#</th>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody id="insertion-point">
+                    <tr tal:repeat="term view.terms"
+                        tal:attributes="id view.termuuid(term); data-uuid view.termuuid(term)"
+                    >
+                        <td tal:content="repeat['term'].number" class="hidden">N</td>
+                        <td
+                            tal:content="term.id"
+                            tal:attributes="id term.id"
+                        >id</td>
+                        <td tal:content="term.name">name</td>
+                        <td class="right"><button class="btn btn-primary isu-delete-btn"> Delete </button>
+                            <button class="btn btn-primary isu-edit-btn"> Edit </button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary"
+                        id="add-button">Add</button>
+            </div>
         </div>
-        <div id="e">
+        <div class="right vocabpanel" id="form-panel">
+            Here we have a panel
+        </div>
+        <div id="templates" class="hidden">
+            <div id="form-template">
+                <div class="form-group row">
+                    <label for="id-input" class="col-2 col-form-label">Code</label>
+                    <div class="col-10">
+                        <input class="form-control" type="text" value="Code 1" id="id-input">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="name-input" class="col-2 col-form-label">Search</label>
+                    <div class="col-10">
+                        <input class="form-control" type="search" value="Some wonderful name" id="name-input">
+                    </div>
+                </div>
+            </div>
         </div>
     </tal:block>
     <tal:block metal:fill-slot="script-src">
-        <script type="text/javascript">
-            function rowDelete(){
-            $(this).parent().parent().remove();
-            };
-
-            $("#add-button").click(function(){
-            var ip = $("#insertion-point");
-            uuid = generateUUID();
-            ip.append(`
-            <tr id="`+uuid+`">
-                <td class="hidden">&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>
-                    <button class="btn btn-primary isu-delete-btn"> Delete </button>
-                    <button class="btn btn-primary isu-edit-btn"> Edit </button>
-                </td>
-            </tr>
-            `);
-
-            var rows=$("#"+uuid);
-            var btns=rows.find(".isu-delete-btn");
-            btns.click(rowDelete);
-
-            });
-
-            $(".isu-delete-btn").click(rowDelete);
-
-            function generateUUID () { // Public Domain/MIT
-            var d = new Date().getTime();
-            if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
-            d += performance.now(); //use high-precision timer if available
-            }
-            return 'xxxxxxxx-xxxx-8xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = (d + Math.random() * 16) % 16 | 0;
-            d = Math.floor(d / 16);
-            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-            });
-            }
+        <script type="text/javascript" src="js/vocabedit.js">
         </script>
     </tal:block>
 </html>

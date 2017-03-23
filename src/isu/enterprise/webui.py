@@ -36,6 +36,12 @@ class DefaultView(object):
     def __init__(self, context=None):
         self.context = context
 
+    @property
+    def uuid(self):
+        if not hasattr(self, "__uuid__"):
+            self.__uuid__ = uuid.uuid1()
+        return self.__uuid__
+
 
 class HomeView(DefaultView):
     title = _N("ISU Enterprise Platform")
@@ -74,7 +80,10 @@ class VocabularyEditorView(DefaultView):
     def terms(self):
         return self.context.terms
 
-    def uuid(self, term):
+    def termuuid(self, term=None):
+        if term is None:
+            return super(VocabularyEditorView, self).uuid()
+
         if term in self.uuids:
             return self.uuids[term]
         else:
@@ -131,6 +140,7 @@ def main(global_config, **settings):
     config.add_static_view(
         name='plugins', path='isu.enterprise:admin-lte/plugins')
     config.add_static_view(name='dist', path='isu.enterprise:admin-lte/dist')
+    config.add_static_view(name='js', path='isu.enterprise:templates/js')
     # End of static assets
     config.add_route('home', '/')
     config.add_route('credit-slip', '/CS')
