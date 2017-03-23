@@ -17,19 +17,30 @@ from isu.enterprise.configurator import createConfigurator
 from isu.onece.org.components import Commondities
 from isu.onece.interfaces import IVocabularyItem, IVocabulary
 
+import collections
+import uuid
+
 createConfigurator("development.ini")
 
 
 def _N(x):
     return x
 
+
 GSM = getGlobalSiteManager()
+
 
 @implementer(IView)
 class DefaultView(object):
 
     def __init__(self, context=None):
         self.context = context
+
+    @property
+    def uuid(self):
+        if not hasattr(self, "__uuid__"):
+            self.__uuid__ = uuid.uuid1()
+        return self.__uuid__
 
 
 class HomeView(DefaultView):
@@ -56,14 +67,32 @@ class CreditSlipView(DefaultView):
     def date(self):
         return str(self.context.date).split(" ")[0]
 
+
 @adapter(IVocabulary)
 class VocabularyEditorView(DefaultView):
     title = _N("Vocabulary editor")
+
+    def __init__(self, context=None):
+        self.context = context
+        self.uuids = collections.OrderedDict()
+
     @property
     def terms(self):
         return self.context.terms
 
+    def termuuid(self, term=None):
+        if term is None:
+            return super(VocabularyEditorView, self).uuid()
+
+        if term in self.uuids:
+            return self.uuids[term]
+        else:
+            uuid_ = uuid.uuid1()
+            return self.uuids.setdefault(term, uuid_)
+
+
 GSM.registerAdapter(VocabularyEditorView)
+
 
 @view_config(route_name="credit-slip", renderer="isu.enterprise:templates/credit-slip.pt")
 def credit_slip_test(request):
@@ -79,15 +108,16 @@ def credit_slip_test(request):
         "default": True
     }
 
+
 @view_config(route_name="vocabulary-editor",
-    renderer="isu.enterprise:templates/vocabulary-editor.pt")
+             renderer="isu.enterprise:templates/vocabulary-editor.pt")
 def vocabulary_editor(request):
-    vocab= Commondities(factory_name='commondity')
-    vocab.append(createObject('commondity',10, "Air"))
-    vocab.append(createObject('commondity',23, "Water"))
-    vocab.append(createObject('commondity',34, "Soil"))
-    vocab.append(createObject('commondity',42, "Fire"))
-    vocab.append(createObject('commondity',54, "Star"))
+    vocab = Commondities(factory_name='commondity')
+    vocab.append(createObject('commondity', 10, "Air"))
+    vocab.append(createObject('commondity', 23, "Water"))
+    vocab.append(createObject('commondity', 34, "Soil"))
+    vocab.append(createObject('commondity', 42, "Fire"))
+    vocab.append(createObject('commondity', 54, "Star"))
     view = IView(vocab)
     return {
         "view": view,
@@ -96,6 +126,7 @@ def vocabulary_editor(request):
         "context": vocab,
         "default": True
     }
+
 
 def main(global_config, **settings):
     config = Configurator(settings=settings)
@@ -111,6 +142,7 @@ def main(global_config, **settings):
     config.add_static_view(
         name='plugins', path='isu.enterprise:admin-lte/plugins')
     config.add_static_view(name='dist', path='isu.enterprise:admin-lte/dist')
+    config.add_static_view(name='js', path='isu.enterprise:templates/js')
     # End of static assets
     config.add_route('home', '/')
     config.add_route('credit-slip', '/CS')

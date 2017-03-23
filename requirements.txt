@@ -6,3 +6,5 @@ pyramid
 chameleon
 pyramid_chameleon
 pyramid_zcml
+pyramid_debugtoolbar
+cornice
