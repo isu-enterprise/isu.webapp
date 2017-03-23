@@ -83,7 +83,6 @@
             </div>
         </div>
         <div class="right vocabpanel" id="form-panel">
-            Here we have a panel
         </div>
         <div id="templates" class="hidden">
             <div id="form-template">

@@ -2,12 +2,23 @@ function rowDelete(){
   $(this).parent().parent().remove();
 };
 
+function updateRow() {
+}
+
 function rowEdit(){
   var btn = $(this);
+  var tdid = "";
+  var tdname = "";
   var row = btn.parent().parent();
-  var form = $("#template-form").clone();
+  var form = $("#form-template").clone();
+  var uuid = row.attr("data-uuid");
+  var place = $("#form-panel");
+  place.empty();
+  place.append(form);
+  place.append(`<button id="form-update-btn" class="btn btn-success">Update</button>`);
+  $("#form-update-btn").click(function(){
 
-  alert(row.attr("data-uuid"));
+  });
 }
 
 $("#add-button").click(function(){
