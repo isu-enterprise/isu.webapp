@@ -2,9 +2,6 @@ function rowDelete(){
   $(this).parent().parent().remove();
 };
 
-function updateRow() {
-}
-
 function rowEdit(){
   var btn = $(this);
   var tdid = "";
@@ -15,9 +12,9 @@ function rowEdit(){
   var place = $("#form-panel");
   place.empty();
   place.append(form);
-  place.append(`<button id="form-update-btn" class="btn btn-success">Update</button>`);
   $("#form-update-btn").click(function(){
-
+    alert("Saving");
+    place.empty();
   });
 }
 
@@ -29,10 +26,6 @@ $("#add-button").click(function(){
                 <td class="hidden">&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td class="right">
-                    <button class="btn btn-primary isu-delete-btn"> Delete </button>
-                    <button class="btn btn-primary isu-edit-btn"> Edit </button>
-                </td>
             </tr>
             `);
 
@@ -45,6 +38,10 @@ $("#add-button").click(function(){
 
 $(".isu-delete-btn").click(rowDelete);
 $(".isu-edit-btn").click(rowEdit);
+$('#vocabulary-editor').on('click', 'tr', function(event) {
+  $(this).addClass('active').siblings().removeClass('active');
+});
+
 
 function generateUUID () { // Public Domain/MIT
   var d = new Date().getTime();
