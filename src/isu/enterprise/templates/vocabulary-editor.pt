@@ -43,9 +43,14 @@
              float: right;
              /* background-color: green; */
          }
-         tr.active {
+         tr.selected_row {
              background-color: cyan;
          }
+         .gi-75m{font-size: 0.75em;}
+         .gi-2x{font-size: 2em;}
+         .gi-3x{font-size: 3em;}
+         .gi-4x{font-size: 4em;}
+         .gi-5x{font-size: 5em;}
         </style>
     </tal:block>
     <tal:block metal:fill-slot="content">
@@ -57,8 +62,9 @@
                     Factory name :
                     <span tal:content="context.factory_name"></span><br/>
                 </p>
+                <div id="message-location"></div>
                 <div class="btn-group left">
-                    <button id="vocab-update-btn" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"/></button>
+                    <button id="vocab-save-btn" class="btn btn-success"><span class="glyphicon glyphicon-save" aria-hidden="true"/></button>
                     <button type="button" class="btn btn-primary"
                             id="add-button"><span class="glyphicon glyphicon-plus" aria-hidden="true"/></button>
                     <button class="btn btn-primary isu-edit-btn"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></button>
@@ -72,23 +78,29 @@
                        data-uuid="000000-000-000-00000"
                        tal:attributes="data-uuid view.uuid"
                 >
-                    <thead>
+                    <thead id="vocabulary-editor-header">
                         <tr>
                             <th class="hidden">#</th>
-                            <th>id</th>
-                            <th>name</th>
+                            <th style="width:5em;">id</th>
+                            <th style="width:auto;">name</th>
                         </tr>
                     </thead>
                     <tbody id="insertion-point">
                         <tr tal:repeat="term view.terms"
                             tal:attributes="id view.termuuid(term); data-uuid view.termuuid(term)"
                         >
-                            <td tal:content="repeat['term'].number" class="hidden">N</td>
+                            <td tal:content="repeat['term'].number" class="hidden"
+                                data-field-id="_number"
+                            >N</td>
                             <td
                                 tal:content="term.id"
                                 tal:attributes="id term.id"
+                                data-field-id="id"
                             >id</td>
-                            <td tal:content="term.name">name</td>
+                            <td
+                                tal:content="term.name"
+                                data-field-id="name"
+                            >name</td>
                         </tr>
                     </tbody>
                 </table>
@@ -96,28 +108,33 @@
         </div>
         <div class="right vocabpanel" id="form-panel">
         </div>
-        <div id="templates" class="hidden">
-            <div class="panel panel-success right vocabtable" id="form-template">
+        <template>
+            <div id="alert" class="alert alert-dismissable">
+                <span id="icon" class="glyphicon" style="margin-right:1em;"></span><span id="msg"></span>
+                <span class="close" data-dismiss="alert" aria-label="close">&times;</span>
+            </div>
+            <div id="form" class="panel panel-success right vocabtable" style="width:100%;margin-left:1em;">
                 <div class="panel-heading" tal:content="default">
                     Editing the vocabulary item
                 </div>
-                <div class="panel-body">
-                    <button id="form-update-btn" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"/></button>
-                    <div class="form-group row">
-                        <label for="id-input" class="col-2 col-form-label">Code</label>
-                        <div class="col-10">
-                            <input class="form-control" type="text" value="Code 1" id="id-input">
+                <div class="panel-body" style="padding:1em;">
+                    <button id="form-update-btn" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></button>
+                        <input value="Number 1" id="number-input" type="hidden">
+                        <div class="form-group row">
+                            <label for="id-input" class="col-2 col-form-label">Code</label>
+                            <div class="col-10">
+                                <input class="form-control" type="text" value="Code 1" id="id-input">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="name-input" class="col-2 col-form-label">Search</label>
-                        <div class="col-10">
-                            <input class="form-control" type="search" value="Some wonderful name" id="name-input">
+                        <div class="form-group row">
+                            <label for="name-input" class="col-2 col-form-label">Search</label>
+                            <div class="col-10">
+                                <input class="form-control" type="search" value="Some wonderful name" id="name-input">
+                            </div>
                         </div>
-                    </div>
                 </div>
             </div>
-        </div>
+        </template>
     </tal:block>
     <tal:block metal:fill-slot="script-src">
         <script type="text/javascript" src="js/vocabedit.js">

@@ -4,11 +4,11 @@ from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.view import view_config
 
-from icc.mvw.interfaces import IView
+from icc.mvw.interfaces import IView, IViewRegistry
 from isu.enterprise.interfaces import ICreditSlip
 from isu.onece.interfaces import IVocabularyItem
 from zope.interface import implementer
-from zope.component import adapter, getGlobalSiteManager, createObject
+from zope.component import adapter, getGlobalSiteManager, createObject, getUtility, queryUtility
 
 from isu.enterprise.components import CreditSlip
 from isu.enterprise.configurator import createConfigurator
@@ -29,6 +29,32 @@ def _N(x):
 
 GSM = getGlobalSiteManager()
 
+_default=object()
+
+@implementer(IViewRegistry)
+class ViewRegistry(object):
+    """
+    Registers views under a non-empty name.
+    """
+    def __init__(self):
+        self.views={}
+
+    def register(self, view, name):
+        """
+        Register a view under a name
+        """
+        self.views[name]=view
+
+    def get(self, name, default=None):
+        return self.view.get(name, default=default)
+
+    def unregister(self, name):
+        if name in self.views:
+            del self.views[name]
+
+view_registry=ViewRegistry()
+
+GSM.registerUtility(view_registry)
 
 @implementer(IView)
 class DefaultView(object):
@@ -40,6 +66,8 @@ class DefaultView(object):
     def uuid(self):
         if not hasattr(self, "__uuid__"):
             self.__uuid__ = uuid.uuid1()
+            view_registry=getUtility(IViewRegistry)
+            view_registry.register(self, self.__uuid__)
         return self.__uuid__
 
 
@@ -90,7 +118,6 @@ class VocabularyEditorView(DefaultView):
             uuid_ = uuid.uuid1()
             return self.uuids.setdefault(term, uuid_)
 
-
 GSM.registerAdapter(VocabularyEditorView)
 
 
@@ -127,6 +154,21 @@ def vocabulary_editor(request):
         "default": True
     }
 
+@view_config(route_name="vocabulary-editor-api-save",
+             renderer="json",
+             request_method="POST"
+)
+def vocabulary_editor_api_save(request):
+    query = request.json_body
+    view_uuid = query["uuid"]
+    view_registry = getUtility(IViewRegistry)
+    view = view_registry.get(view_uuid, None)
+    if view is none:
+        return {"status":"KO", message:"Cannot find view associated with the seance!"}
+    context = vocab = view.context
+    print(context)
+    return {"status":"OK", "message":_N("Changes saved!")}
+
 
 def main(global_config, **settings):
     config = Configurator(settings=settings)
@@ -147,6 +189,7 @@ def main(global_config, **settings):
     config.add_route('home', '/')
     config.add_route('credit-slip', '/CS')
     config.add_route('vocabulary-editor', '/VE')
+    config.add_route('vocabulary-editor-api-save', '/VE/api/save')
     config.add_subscriber('isu.enterprise.subscribers.add_base_template',
                           'pyramid.events.BeforeRender')
     config.scan()

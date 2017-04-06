@@ -1,7 +1,7 @@
 .PHONY: env dev develop install test edit \
 	py pot init-ru update-ru comp-cat \
 	upd-cat setup test setup-requs tests \
-	run-tests gdb-test clean serve
+	run-tests gdb-test clean serve server
 
 #A source dir of a local C/C++ library to link with
 #TOP_DIR=
@@ -18,6 +18,8 @@ V=$(HOME)/.pyenv/versions/$(LPYTHON)
 #LG_DIR="link-grammar"
 #LG_LIB_DIR=$(TOP_DIR)/$(LG_DIR)/.libs
 #LG_HEADERS=$(TOP_DIR)
+
+server: serve
 
 serve:
 	pserve development.ini --reload
