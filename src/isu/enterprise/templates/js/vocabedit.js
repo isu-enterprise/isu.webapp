@@ -34,6 +34,22 @@ function rowEdit(){
   });
 }
 
+
+function showMessage(level, msg) {
+  var ml = $("#message-location");
+  // glyphicon-ok-sign
+  var icon = "glyphicon-" + {
+    "success": "ok-sign",
+    "danger": "exclamation-sign"
+  }[level];
+  ml.addClass("alert-"+level);
+  var a = getTemplate("#alert");
+  a.find("#msg").text(msg);
+  a.find("#icon").addClass(icon);
+  ml.empty();
+  ml.append(a);
+};
+
 $("#add-button").click(function(){
   var ip = $("#insertion-point");
   uuid = generateUUID();
@@ -78,7 +94,23 @@ $("#vocab-save-btn").click(function(){
     });
     request.rows[i]=s;
   });
-  alert(JSON.stringify(request));
+  $.ajax({
+    type: "POST",
+    url: "/VE/api/save",
+    data: JSON.stringify(request),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){
+      if (data.status=="OK") {
+        showMessage("success", data.message);
+      } else {
+        showMessage("danger", data.message);
+      }
+    },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+});
 });
 
 function generateUUID () { // Public Domain/MIT

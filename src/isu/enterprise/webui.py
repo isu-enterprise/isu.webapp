@@ -40,6 +40,8 @@ class DefaultView(object):
     def uuid(self):
         if not hasattr(self, "__uuid__"):
             self.__uuid__ = uuid.uuid1()
+            print(self.__uuid__, type(self.__uuid__))
+            GSM.registerUtility(self, name=str(self.__uuid__))
         return self.__uuid__
 
 
@@ -90,7 +92,6 @@ class VocabularyEditorView(DefaultView):
             uuid_ = uuid.uuid1()
             return self.uuids.setdefault(term, uuid_)
 
-
 GSM.registerAdapter(VocabularyEditorView)
 
 
@@ -127,6 +128,14 @@ def vocabulary_editor(request):
         "default": True
     }
 
+@view_config(route_name="vocabulary-editor-api-save",
+             renderer="json",
+             request_method="POST"
+)
+def vocabulary_editor_api_save(request):
+    query = request.json_body
+    return {"status":"OK", "message":_N("Changes saved!")}
+
 
 def main(global_config, **settings):
     config = Configurator(settings=settings)
@@ -147,6 +156,7 @@ def main(global_config, **settings):
     config.add_route('home', '/')
     config.add_route('credit-slip', '/CS')
     config.add_route('vocabulary-editor', '/VE')
+    config.add_route('vocabulary-editor-api-save', '/VE/api/save')
     config.add_subscriber('isu.enterprise.subscribers.add_base_template',
                           'pyramid.events.BeforeRender')
     config.scan()

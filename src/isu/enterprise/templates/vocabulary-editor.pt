@@ -47,6 +47,11 @@
          tr.selected_row {
              background-color: cyan;
          }
+         .gi-75m{font-size: 0.75em;}
+         .gi-2x{font-size: 2em;}
+         .gi-3x{font-size: 3em;}
+         .gi-4x{font-size: 4em;}
+         .gi-5x{font-size: 5em;}
         </style>
     </tal:block>
     <tal:block metal:fill-slot="content">
@@ -58,6 +63,7 @@
                     Factory name :
                     <span tal:content="context.factory_name"></span><br/>
                 </p>
+                <div id="message-location"></div>
                 <div class="btn-group left">
                     <button id="vocab-save-btn" class="btn btn-success"><span class="glyphicon glyphicon-save" aria-hidden="true"/></button>
                     <button type="button" class="btn btn-primary"
@@ -104,6 +110,10 @@
         <div class="right vocabpanel" id="form-panel">
         </div>
         <template>
+            <div id="alert" class="alert alert-dismissable">
+                <span id="icon" class="glyphicon" style="margin-right:1em;"></span><span id="msg"></span>
+                <span class="close" data-dismiss="alert" aria-label="close">&times;</span>
+            </div>
             <div id="form" class="panel panel-success right vocabtable" style="width:100%;margin-left:1em;">
                 <div class="panel-heading" tal:content="default">
                     Editing the vocabulary item
