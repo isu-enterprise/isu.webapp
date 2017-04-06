@@ -8,7 +8,7 @@ from icc.mvw.interfaces import IView
 from isu.enterprise.interfaces import ICreditSlip
 from isu.onece.interfaces import IVocabularyItem
 from zope.interface import implementer
-from zope.component import adapter, getGlobalSiteManager, createObject
+from zope.component import adapter, getGlobalSiteManager, createObject, getUtility, queryUtility
 
 from isu.enterprise.components import CreditSlip
 from isu.enterprise.configurator import createConfigurator
@@ -134,6 +134,10 @@ def vocabulary_editor(request):
 )
 def vocabulary_editor_api_save(request):
     query = request.json_body
+    view_uuid = query["uuid"]
+    view = getUtility(IView, name=view_uuid)
+    context = vocab = view.context
+    print(context)
     return {"status":"OK", "message":_N("Changes saved!")}
 
 
