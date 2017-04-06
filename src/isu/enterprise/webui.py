@@ -23,6 +23,10 @@ import uuid
 createConfigurator("development.ini")
 
 
+def UUID():
+    return str(uuid.uuid1())
+
+
 def _N(x):
     return x
 
@@ -46,7 +50,7 @@ class ViewRegistry(object):
         self.views[name]=view
 
     def get(self, name, default=None):
-        return self.view.get(name, default=default)
+        return self.views.get(name, default)
 
     def unregister(self, name):
         if name in self.views:
@@ -65,7 +69,7 @@ class DefaultView(object):
     @property
     def uuid(self):
         if not hasattr(self, "__uuid__"):
-            self.__uuid__ = uuid.uuid1()
+            self.__uuid__ = UUID()
             view_registry=getUtility(IViewRegistry)
             view_registry.register(self, self.__uuid__)
         return self.__uuid__
@@ -115,7 +119,7 @@ class VocabularyEditorView(DefaultView):
         if term in self.uuids:
             return self.uuids[term]
         else:
-            uuid_ = uuid.uuid1()
+            uuid_ = UUID()
             return self.uuids.setdefault(term, uuid_)
 
 GSM.registerAdapter(VocabularyEditorView)
@@ -163,8 +167,8 @@ def vocabulary_editor_api_save(request):
     view_uuid = query["uuid"]
     view_registry = getUtility(IViewRegistry)
     view = view_registry.get(view_uuid, None)
-    if view is none:
-        return {"status":"KO", message:"Cannot find view associated with the seance!"}
+    if view is None:
+        return {"status":"KO", "message":"Cannot find view associated with the session!"}
     context = vocab = view.context
     print(context)
     return {"status":"OK", "message":_N("Changes saved!")}

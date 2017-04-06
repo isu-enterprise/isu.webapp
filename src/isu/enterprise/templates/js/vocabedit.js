@@ -42,8 +42,8 @@ function showMessage(level, msg) {
     "success": "ok-sign",
     "danger": "exclamation-sign"
   }[level];
-  ml.addClass("alert-"+level);
   var a = getTemplate("#alert");
+  a.addClass("alert-"+level);
   a.find("#msg").text(msg);
   a.find("#icon").addClass(icon);
   ml.empty();
@@ -101,7 +101,7 @@ $("#vocab-save-btn").click(function(){
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     success: function(data){
-      if (data.status=="OK") {
+      if (data.status == "OK") {
         showMessage("success", data.message);
       } else {
         showMessage("danger", data.message);
