@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="main.macros['page']">
+    <tal:block metal:fill-slot="header-meta">
+        <style>
+         /* Font Definitions */
+         /*
+            table {
+            border-collapse: collapse;
+            }
+
+            table, th, td {
+            border: 1px solid black;
+            }
+          */
+         .simple_table {
+             /* margin: 1em; */
+             width: 100%;
+             border: 1px solid black;
+             border-collapse: collapse;
+         }
+
+         .hidden {
+             display: none;
+         }
+
+         .vocabpanel {
+             width: 40%;
+             max-width: 40%;
+         }
+
+         .vocabtable {
+             width: 60%;
+         }
+
+         .left {
+             float: left;
+             /* background-color: yellow; */
+         }
+         .right {
+             float: right;
+             /* background-color: green; */
+         }
+         tr.selected_row {
+             background-color: cyan;
+         }
+         .gi-75m{font-size: 0.75em;}
+         .gi-2x{font-size: 2em;}
+         .gi-3x{font-size: 3em;}
+         .gi-4x{font-size: 4em;}
+         .gi-5x{font-size: 5em;}
+        </style>
+    </tal:block>
+    <tal:block metal:fill-slot="content">
+        <div class="panel panel-primary left vocabtable">
+            <div class="panel-heading" tal:content="view.title | nothing">
+            </div>
+            <div class="panel-body">
+                <p>
+                    Factory name :
+                    <span tal:content="context.factory_name"></span><br/>
+                </p>
+                <div id="message-location"></div>
+                <div class="btn-group left">
+                    <button id="vocab-save-btn" class="btn btn-success"><span class="glyphicon glyphicon-save" aria-hidden="true"/></button>
+                    <button type="button" class="btn btn-primary"
+                            id="add-button"><span class="glyphicon glyphicon-plus" aria-hidden="true"/></button>
+                    <button class="btn btn-primary isu-edit-btn"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></button>
+                </div>
+                <div class="btn-group right">
+                    <button class="btn btn-danger isu-delete-btn"><span class="glyphicon glyphicon-minus" aria-hidden="true"/></button>
+                    <button class="btn btn-danger isu-delete-btn"><span class="glyphicon glyphicon-remove" aria-hidden="true"/></button>
+                </div>
+                <table class="table table-striped simple_table"
+                       id="vocabulary-editor"
+                       data-uuid="000000-000-000-00000"
+                       tal:attributes="data-uuid view.uuid"
+                >
+                    <thead id="vocabulary-editor-header">
+                        <tr>
+                            <th class="hidden">#</th>
+                            <th style="width:5em;">id</th>
+                            <th style="width:auto;">name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="insertion-point">
+                        <tr tal:repeat="term view.terms"
+                            tal:attributes="id view.termuuid(term); data-uuid view.termuuid(term)"
+                        >
+                            <td tal:content="repeat['term'].number" class="hidden"
+                                data-field-id="_number"
+                            >N</td>
+                            <td
+                                tal:content="term.id"
+                                tal:attributes="id term.id"
+                                data-field-id="id"
+                            >id</td>
+                            <td
+                                tal:content="term.name"
+                                data-field-id="name"
+                            >name</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="right vocabpanel" id="form-panel">
+        </div>
+        <template>
+            <div id="alert" class="alert alert-dismissable">
+                <span id="icon" class="glyphicon" style="margin-right:1em;"></span><span id="msg"></span>
+                <span class="close" data-dismiss="alert" aria-label="close">&times;</span>
+            </div>
+            <div id="form" class="panel panel-success right vocabtable" style="width:100%;margin-left:1em;">
+                <div class="panel-heading" tal:content="default">
+                    Editing the vocabulary item
+                </div>
+                <div class="panel-body" style="padding:1em;">
+                    <button id="form-update-btn" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></button>
+                        <input value="Number 1" id="number-input" type="hidden">
+                        <div class="form-group row">
+                            <label for="id-input" class="col-2 col-form-label">Code</label>
+                            <div class="col-10">
+                                <input class="form-control" type="text" value="Code 1" id="id-input">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="name-input" class="col-2 col-form-label">Search</label>
+                            <div class="col-10">
+                                <input class="form-control" type="search" value="Some wonderful name" id="name-input">
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </template>
+    </tal:block>
+    <tal:block metal:fill-slot="script-src">
+        <script type="text/javascript" src="js/vocabedit.js">
+        </script>
+
+    </tal:block>
+</html>
