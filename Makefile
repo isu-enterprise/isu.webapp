@@ -12,8 +12,8 @@ V=$(HOME)/.pyenv/versions/$(LPYTHON)
 #VB=$(V)/bin
 #PYTHON=$(VB)/$(LPYTHON)
 #ROOT=$(PWD)
-#INI=isu.enterprise
-#LCAT=src/isu.enterprise/locale/
+#INI=isu.webapp
+#LCAT=src/isu.webapp/locale/
 
 #LG_DIR="link-grammar"
 #LG_LIB_DIR=$(TOP_DIR)/$(LG_DIR)/.libs

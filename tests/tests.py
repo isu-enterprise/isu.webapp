@@ -1,11 +1,15 @@
 from isu.enterprise.configurator import createConfigurator
 createConfigurator(ini='tests.ini', name='')
 
+# FIXME: Remove test from isu.enterprise
+
 from isu.enterprise.components import *
 from zope.component import getUtility, getAdapter
 import isu.enterprise.sqlstorage
 from nose.tools import nottest
 from nose.plugins.skip import Skip
+
+
 class IsuEnterpriseTests:
     def setUp(self):
         pass
@@ -35,6 +39,7 @@ class TestEntryImplementation:
         assert self.e.currency == 643
         assert self.e.moment is not None
 
+
 class TestStorage:
     def setUp(self):
         self.store = getUtility(IStorage, name="acc")
@@ -52,14 +57,13 @@ class TestPostgesStorageAdapter(TestEntryImplementation):
         self.store.store(self.e)
         assert hasattr(self.e, "__sql_id__")
         sql_id = self.e.__sql_id__
-        assert sql_id>0
-        self.e.dr="51"
+        assert sql_id > 0
+        self.e.dr = "51"
         self.store.store(self.e)
-        assert sql_id==self.e.__sql_id__
+        assert sql_id == self.e.__sql_id__
 
     def test_load(self):
         self.store.store(self.e)
         id = self.e.__sql_id__
         e = self.store.load(klass=Entry, id=id)
-        assert e.cr==self.e.cr
-
+        assert e.cr == self.e.cr

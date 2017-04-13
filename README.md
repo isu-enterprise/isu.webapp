@@ -17,16 +17,16 @@ git config --global user.email "lab@irnok.net"
 Clone project with
 
 ```bash
-git clone https://github.com/<GITHUB-USER-NAME>/isu.enterprise.git
-cd isu.enterprise
+git clone https://github.com/<GITHUB-USER-NAME>/isu.webapp.git
+cd isu.webapp
 ```
 
 Substitution `<GITHUB-USER-NAME>` may be `eugeneai` or `isu-enterprise`.
 In doubts, just clone this one
 
 ```bash
-git clone https://github.com/isu-enterprise/isu.enterprise.git
-cd isu.enterprise
+git clone https://github.com/isu-enterprise/isu.webapp.git
+cd isu.webapp
 ```
 
 Then install required packages **in development mode** and make the
@@ -38,7 +38,7 @@ python setup.py develop
 ```
 
 Here `--src <directory>` is where sources of subpackages will be located.
-In this case they will be located in the same directory as `isu.enterprise`.
+In this case they will be located in the same directory as `isu.webapp`.
 
 Run the WEB-server, but it will not start if a storage is not set up.
 

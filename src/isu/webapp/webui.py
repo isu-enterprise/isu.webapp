@@ -33,21 +33,23 @@ def _N(x):
 
 GSM = getGlobalSiteManager()
 
-_default=object()
+_default = object()
+
 
 @implementer(IViewRegistry)
 class ViewRegistry(object):
     """
     Registers views under a non-empty name.
     """
+
     def __init__(self):
-        self.views={}
+        self.views = {}
 
     def register(self, view, name):
         """
         Register a view under a name
         """
-        self.views[name]=view
+        self.views[name] = view
 
     def get(self, name, default=None):
         return self.views.get(name, default)
@@ -56,9 +58,11 @@ class ViewRegistry(object):
         if name in self.views:
             del self.views[name]
 
-view_registry=ViewRegistry()
+
+view_registry = ViewRegistry()
 
 GSM.registerUtility(view_registry)
+
 
 @implementer(IView)
 class DefaultView(object):
@@ -70,7 +74,7 @@ class DefaultView(object):
     def uuid(self):
         if not hasattr(self, "__uuid__"):
             self.__uuid__ = UUID()
-            view_registry=getUtility(IViewRegistry)
+            view_registry = getUtility(IViewRegistry)
             view_registry.register(self, self.__uuid__)
         return self.__uuid__
 
@@ -79,7 +83,7 @@ class HomeView(DefaultView):
     title = _N("ISU Enterprise Platform")
 
 
-@view_config(route_name='home', renderer="isu.enterprise:templates/index.pt")
+@view_config(route_name='home', renderer="isu.webapp:templates/index.pt")
 def hello_world(request):
     return {
         "view": HomeView(),
@@ -122,10 +126,11 @@ class VocabularyEditorView(DefaultView):
             uuid_ = UUID()
             return self.uuids.setdefault(term, uuid_)
 
+
 GSM.registerAdapter(VocabularyEditorView)
 
 
-@view_config(route_name="credit-slip", renderer="isu.enterprise:templates/credit-slip.pt")
+@view_config(route_name="credit-slip", renderer="isu.webapp:templates/credit-slip.pt")
 def credit_slip_test(request):
     cs = CreditSlip(42, reason="Зарплата директору")
     #response = request.response
@@ -141,7 +146,7 @@ def credit_slip_test(request):
 
 
 @view_config(route_name="vocabulary-editor",
-             renderer="isu.enterprise:templates/vocabulary-editor.pt")
+             renderer="isu.webapp:templates/vocabulary-editor.pt")
 def vocabulary_editor(request):
     vocab = Commondities(factory_name='commondity')
     vocab.append(createObject('commondity', 10, "Air"))
@@ -158,43 +163,44 @@ def vocabulary_editor(request):
         "default": True
     }
 
+
 @view_config(route_name="vocabulary-editor-api-save",
              renderer="json",
              request_method="POST"
-)
+             )
 def vocabulary_editor_api_save(request):
     query = request.json_body
     view_uuid = query["uuid"]
     view_registry = getUtility(IViewRegistry)
     view = view_registry.get(view_uuid, None)
     if view is None:
-        return {"status":"KO", "message":"Cannot find view associated with the session!"}
+        return {"status": "KO", "message": "Cannot find view associated with the session!"}
     context = vocab = view.context
     print(context)
-    return {"status":"OK", "message":_N("Changes saved!")}
+    return {"status": "OK", "message": _N("Changes saved!")}
 
 
 def main(global_config, **settings):
     config = Configurator(settings=settings)
     config.include('pyramid_zcml')
-    #config.load_zcml('isu.enterprise:configure.zcml')
+    # config.load_zcml('isu.webapp:configure.zcml')
     config.include('pyramid_chameleon')
     # Static assets configuration
     config.add_static_view(
-        name='bootstrap', path='isu.enterprise:admin-lte/bootstrap')
+        name='bootstrap', path='isu.webapp:admin-lte/bootstrap')
     config.add_static_view(name='documentation',
-                           path='isu.enterprise:admin-lte/documentation')
-    config.add_static_view(name='pages', path='isu.enterprise:admin-lte/pages')
+                           path='isu.webapp:admin-lte/documentation')
+    config.add_static_view(name='pages', path='isu.webapp:admin-lte/pages')
     config.add_static_view(
-        name='plugins', path='isu.enterprise:admin-lte/plugins')
-    config.add_static_view(name='dist', path='isu.enterprise:admin-lte/dist')
-    config.add_static_view(name='js', path='isu.enterprise:templates/js')
+        name='plugins', path='isu.webapp:admin-lte/plugins')
+    config.add_static_view(name='dist', path='isu.webapp:admin-lte/dist')
+    config.add_static_view(name='js', path='isu.webapp:templates/js')
     # End of static assets
     config.add_route('home', '/')
     config.add_route('credit-slip', '/CS')
     config.add_route('vocabulary-editor', '/VE')
     config.add_route('vocabulary-editor-api-save', '/VE/api/save')
-    config.add_subscriber('isu.enterprise.subscribers.add_base_template',
+    config.add_subscriber('isu.webapp.subscribers.add_base_template',
                           'pyramid.events.BeforeRender')
     config.scan()
     app = config.make_wsgi_app()

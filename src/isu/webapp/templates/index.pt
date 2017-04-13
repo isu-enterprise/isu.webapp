@@ -6,7 +6,7 @@
     xmlns:metal="http://xml.zope.org/namespaces/metal"
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     xmlns:ntal="http://example.org/namespaces/ntal"
-    i18n:domain="isu.enterprise"
+    i18n:domain="isu.webapp"
     metal:define-macro="page"
 >
     <head>
