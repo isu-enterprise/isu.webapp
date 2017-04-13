@@ -7,7 +7,7 @@ from pyramid.view import view_config
 from icc.mvw.interfaces import IView, IViewRegistry
 from isu.enterprise.interfaces import ICreditSlip
 from isu.onece.interfaces import IVocabularyItem
-from zope.interface import implementer
+from zope.interface import implementer, directlyProvides
 from zope.component import adapter, getGlobalSiteManager, createObject, getUtility, queryUtility
 
 from isu.enterprise.components import CreditSlip
@@ -16,6 +16,8 @@ from isu.enterprise.configurator import createConfigurator
 
 from isu.onece.org.components import Commondities
 from isu.onece.interfaces import IVocabularyItem, IVocabulary
+
+from isu.webapp.interfaces import IConfigurationEvent
 
 import collections
 import uuid
@@ -203,6 +205,9 @@ def main(global_config, **settings):
     config.add_subscriber('isu.webapp.subscribers.add_base_template',
                           'pyramid.events.BeforeRender')
     config.scan()
+
+    directlyProvides(config, IConfigurationEvent)
+    config.registry.notify(config)
     app = config.make_wsgi_app()
     return app
 
