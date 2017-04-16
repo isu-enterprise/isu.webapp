@@ -24,10 +24,10 @@ from isu.onece.org.components import Commondities
 from isu.onece.interfaces import IVocabularyItem, IVocabulary
 
 from isu.webapp.interfaces import IConfigurationEvent
+from isu.webapp.views import DefaultView, UUID
 import configparser
 
 import collections
-import uuid
 
 conf = createConfigurator("development.ini")
 
@@ -39,10 +39,6 @@ try:
     importlib.import_module(module)
 except configparser.NoSectionError:
     pass
-
-
-def UUID():
-    return str(uuid.uuid1())
 
 
 def _N(x):

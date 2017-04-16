@@ -1,8 +1,13 @@
 from zope.interface import implementer
 from icc.mvw.interfaces import IView, IViewRegistry
-from zope.component import getGlobalSiteManager
+from zope.component import getGlobalSiteManager, getUtility
+import uuid
 
 GSM = getGlobalSiteManager()
+
+
+def UUID():
+    return str(uuid.uuid1())
 
 
 @implementer(IViewRegistry)
