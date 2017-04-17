@@ -1,4 +1,4 @@
--e git+https://github.com/isu-enterprise/isu.enterprise#egg=isu.enterprise
+# -e git+https://github.com/isu-enterprise/isu.enterprise#egg=isu.enterprise
 psycopg2
 pyramid
 chameleon
