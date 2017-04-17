@@ -1,9 +1,6 @@
 from pyramid.renderers import get_renderer
 
-#from pyramid.events import subscriber, BeforeRender
 
-
-#@subscriber(BeforeRender)
 def add_base_template(event):
     """Add base templates.
     """
@@ -12,11 +9,9 @@ def add_base_template(event):
     #email_main = get_renderer('templates/email/main.pt').implementation()
     email_main = False
     request = event["req"]
-    print(request)
     event.update({'main': main, 'test': test,
                   "default": True,
                   "nothing": False,
                   "request": request,
                   "response": request.response
                   })
-    print(main.macros["page"])
