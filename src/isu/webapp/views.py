@@ -1,6 +1,7 @@
 from zope.interface import implementer
 from icc.mvw.interfaces import IView, IViewRegistry
 from zope.component import getGlobalSiteManager, getUtility
+import pyramid.threadlocal
 import uuid
 
 GSM = getGlobalSiteManager()
@@ -39,10 +40,25 @@ GSM.registerUtility(view_registry)
 
 
 @implementer(IView)
-class DefaultView(object):
+class View(object):
 
-    def __init__(self, context=None):
+    def __init__(self, context=None, request=None):
         self.context = context
+        self._request = request
+
+    @property
+    def registry(self):
+        if self._request is not None:
+            return self._request.registry
+        else:
+            return pyramid.threadlocal.get_current.registry()
+
+    @property
+    def request(self):
+        if self._request is not None:
+            return self._request
+        else:
+            return pyramid.threadlocal.get_current_request()
 
     @property
     def uuid(self):

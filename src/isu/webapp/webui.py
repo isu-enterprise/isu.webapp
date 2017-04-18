@@ -28,7 +28,7 @@ from isu.onece.org.components import Commondities
 from isu.onece.interfaces import IVocabularyItem, IVocabulary
 
 from isu.webapp.interfaces import IConfigurationEvent
-from isu.webapp.views import DefaultView, UUID
+from isu.webapp.views import View, UUID
 import configparser
 
 import collections
@@ -43,7 +43,7 @@ GSM = getGlobalSiteManager()
 _default = object()
 
 
-class HomeView(DefaultView):
+class HomeView(View):
     title = _N("ISU Enterprise Platform")
 
 
@@ -58,7 +58,7 @@ def hello_world(request):
 
 
 @adapter(ICreditSlip)
-class CreditSlipView(DefaultView):
+class CreditSlipView(View):
     title = _N("Credit Slip")
     body = "<strong>11111</strong>"
     style_css = """"""
@@ -69,11 +69,14 @@ class CreditSlipView(DefaultView):
 
 
 @adapter(IVocabulary)
-class VocabularyEditorView(DefaultView):
+class VocabularyEditorView(View):
     title = _N("Vocabulary editor")
 
-    def __init__(self, context=None):
-        self.context = context
+    def __init__(self, context=None, request=None):
+        super(VocabularyEditorView, self).__init__(
+            context=context,
+            request=request)
+
         self.uuids = collections.OrderedDict()
 
     @property
@@ -99,7 +102,7 @@ def credit_slip_test(request):
     cs = CreditSlip(42, reason="Зарплата директору")
     # response = request.response
     # response.headerlist.append(("Content-Type","text/html"))
-    view = CreditSlipView(cs)
+    view = CreditSlipView(cs, request)
     return {
         "view": view,
         "request": request,
