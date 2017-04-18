@@ -160,20 +160,30 @@ def main(global_config, **settings):
     # show_environment()
 
     conf = createConfigurator(global_config["__file__"])
+    config = Configurator(settings=settings)
+    config.include('pyramid_zcml')
+    config.load_zcml('isu.webapp:configure.zcml')
+    config.include('pyramid_chameleon')
 
     try:
         module = conf["app:main"]["routes"]
         import importlib
         # FIXME: DNU (Do not understand)  why 'egg:'?
         module = module.lstrip("egg:")
-        importlib.import_module(module)
+        _mod = importlib.import_module(module)
+        # if hasattr(_mod, "zcml"):
+        #     _mod.zcml(config)
+        # else:
+        #     raise KeyError("module does not contain zcml(config) function")
+        if hasattr(_mod, "configurator"):
+            _mod.configurator(config)
+        else:
+            raise KeyError(
+                "module does not contain configurator(config) function")
+
     except KeyError:
         print("WARNING: Did not configure other parts of application!")
 
-    config = Configurator(settings=settings)
-    config.include('pyramid_zcml')
-    config.load_zcml('isu.webapp:configure.zcml')
-    config.include('pyramid_chameleon')
     # Static assets configuration
     config.add_static_view(
         name='bootstrap', path='isu.webapp:admin-lte/bootstrap')
@@ -194,7 +204,8 @@ def main(global_config, **settings):
     config.scan()
 
     directlyProvides(config, IConfigurationEvent)
-    handle(config)
+
+    config.registry.notify(config)
 
     app = config.make_wsgi_app()
     return app
