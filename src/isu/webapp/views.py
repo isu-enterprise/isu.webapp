@@ -51,7 +51,7 @@ class View(object):
         if self._request is not None:
             return self._request.registry
         else:
-            return pyramid.threadlocal.get_current.registry()
+            return pyramid.threadlocal.get_current_registry()
 
     @property
     def request(self):
