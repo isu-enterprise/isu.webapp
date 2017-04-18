@@ -16,6 +16,10 @@ from zope.component import (
     handle
 )
 
+import os
+import sys
+from pprint import pprint
+
 from isu.enterprise.components import CreditSlip
 from isu.enterprise.configurator import createConfigurator
 
@@ -28,17 +32,6 @@ from isu.webapp.views import DefaultView, UUID
 import configparser
 
 import collections
-
-conf = createConfigurator("development.ini")
-
-try:
-    module = conf["app:main"]["routes"]
-    # FIXME: DNU (Do not understand)  why 'egg:'?
-    import importlib
-    module = module.lstrip("egg:")
-    importlib.import_module(module)
-except configparser.NoSectionError:
-    pass
 
 
 def _N(x):
@@ -151,10 +144,32 @@ def vocabulary_editor_api_save(request):
     return {"status": "OK", "message": _N("Changes saved!")}
 
 
+def show_environment():
+    print("vars:")
+    pprint(globals())
+    print("Command line:")
+    pprint(sys.argv)
+    print("Environment:")
+    pprint(dict(os.environ))
+
+
 def main(global_config, **settings):
+    # show_environment()
+
+    conf = createConfigurator(global_config["__file__"])
+
+    try:
+        module = conf["app:main"]["routes"]
+        import importlib
+        # FIXME: DNU (Do not understand)  why 'egg:'?
+        module = module.lstrip("egg:")
+        importlib.import_module(module)
+    except KeyError:
+        print("WARNING: Did not configure other parts of application!")
+
     config = Configurator(settings=settings)
     config.include('pyramid_zcml')
-    # config.load_zcml('isu.webapp:configure.zcml')
+    config.load_zcml('isu.webapp:configure.zcml')
     config.include('pyramid_chameleon')
     # Static assets configuration
     config.add_static_view(
@@ -177,6 +192,7 @@ def main(global_config, **settings):
 
     directlyProvides(config, IConfigurationEvent)
     handle(config)
+
     app = config.make_wsgi_app()
     return app
 
