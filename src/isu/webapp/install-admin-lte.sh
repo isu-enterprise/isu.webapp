@@ -1,5 +1,5 @@
-!#/bin/bash
+#!/bin/bash
 echo To install AdminLTE we need nasm package
-git clone https://github.com/almasaeed2010/AdminLTE.git
-cd AdminLTE
-npm install --save 
+npm install --save admin-lte
+cd node_modules/admin-lte
+npm install --save
