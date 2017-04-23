@@ -11,7 +11,7 @@ def add_base_template(event):
     request = event["req"]
     event.update({'main': main, 'test': test,
                   "default": True,
-                  "nothing": False,
+                  "nothing": "",
                   "request": request,
                   "response": request.response
                   })
