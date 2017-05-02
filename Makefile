@@ -10,7 +10,7 @@
 LPYTHON=qgis
 V=$(HOME)/.pyenv/versions/$(LPYTHON)
 #VB=$(V)/bin
-#PYTHON=$(VB)/$(LPYTHON)
+PYTHON=python
 #ROOT=$(PWD)
 #INI=isu.webapp
 #LCAT=src/isu.webapp/locale/
@@ -26,10 +26,10 @@ serve:
 
 env:
 	[ -d $(V) ] || virtualenv  $(V)
-	$(VB)/easy_install --upgrade pip
+	easy_install --upgrade pip
 
 pre-dev:env #dev-....
-	$(VB)/easy_install pip setuptools
+	easy_install pip setuptools
 
 setup:
 	$(PYTHON) setup.py build_ext # -L$(LG_LIB_DIR) -R$(LG_LIB_DIR) -I$(LG_HEADERS)
