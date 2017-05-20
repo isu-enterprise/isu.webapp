@@ -14,3 +14,16 @@ class IConfigurationEvent(Interface):
     """Marker interface denoting a configurator
     instance to be the event.
     """
+
+
+class IView(icc.mvw.View):
+    """Defines Pyramid application view being
+    an adapter of context and request object
+    to a response
+    """
+
+    cobtext = Attribute("The context object")
+    request = Attribute("The request object")
+    registry = Attribute("The registry of the application")
+
+    # FIXME: add title, menu item, etc.

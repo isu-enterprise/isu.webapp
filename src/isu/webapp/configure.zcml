@@ -2,9 +2,36 @@
 
   <include package="pyramid_zcml" />
 
-  <!--
-  <view
-    view="helloworld.hello_world"
-   />
-   -->
+  <route
+      name="home"
+      pattern="/"
+      />
+  <static
+      name="bootstrap"
+      path="isu.webapp:admin-lte/bootstrap"
+      />
+  <static
+      name="documentation"
+      path="isu.webapp:admin-lte/documentation"
+      />
+  <static
+      name="pages"
+      path="isu.webapp:admin-lte/pages"
+      />
+  <static
+      name="plugins"
+      path="isu.webapp:admin-lte/plugins"
+      />
+  <static
+      name="dist"
+      path="isu.webapp:admin-lte/dist"
+      />
+  <static
+      name="js"
+      path="isu.webapp:admin-lte/js"
+      />
+  <subscriber
+      for="pyramid.events.BeforeRender"
+      handler="isu.webapp.subscribers.add_base_template"
+      />
 </configure>
