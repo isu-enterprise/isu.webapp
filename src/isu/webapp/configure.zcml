@@ -30,6 +30,11 @@
       name="js"
       path="isu.webapp:admin-lte/js"
       />
+  <view
+      route_name="home"
+      view=".webui.hello_world"
+      renderer="isu.webapp:templates/index.pt"
+      />
   <subscriber
       for="pyramid.events.BeforeRender"
       handler="isu.webapp.subscribers.add_base_template"

@@ -2,7 +2,7 @@
 # encoding: utf-8
 from pyramid.config import Configurator
 from isu.enterprise.configurator import createConfigurator
-
+from zope.interface import directlyProvides
 from isu.webapp.interfaces import IConfigurationEvent
 from isu.webapp.views import View
 
@@ -15,7 +15,6 @@ class HomeView(View):
     title = _N("ISU Enterprise Platform")
 
 
-@view_config(route_name='home', renderer="isu.webapp:templates/index.pt")
 def hello_world(request):
     return {
         "view": HomeView(),
