@@ -8,7 +8,7 @@ from isu.webapp.views import View
 from zope.i18nmessageid import MessageFactory
 
 
-_ = _N = MessageFactory("isu.enterprise")
+_ = _N = MessageFactory("isu.webapp")
 
 
 class HomeView(View):
