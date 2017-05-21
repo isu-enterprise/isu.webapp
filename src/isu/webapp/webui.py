@@ -5,10 +5,10 @@ from isu.enterprise.configurator import createConfigurator
 from zope.interface import directlyProvides
 from isu.webapp.interfaces import IConfigurationEvent
 from isu.webapp.views import View
+from zope.i18nmessageid import MessageFactory
 
 
-def _N(x):
-    return x
+_ = _N = MessageFactory("isu.enterprise")
 
 
 class HomeView(View):

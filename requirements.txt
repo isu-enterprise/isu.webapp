@@ -1,9 +1,8 @@
 # -e git+https://github.com/isu-enterprise/isu.enterprise#egg=isu.enterprise
-psycopg2
+zope.component[zcml]
+zope.i18nmessageid
 pyramid
 chameleon
 pyramid_chameleon
 pyramid_zcml
-pyramid_debugtoolbar
-cornice
 icc.mvw
