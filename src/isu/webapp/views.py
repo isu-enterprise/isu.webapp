@@ -1,6 +1,5 @@
 from zope.interface import implementer
-from .interfaces import IView
-from zope.component import getUtility
+from .interfaces import IView, IViewRegistry
 import pyramid.threadlocal
 import uuid
 
@@ -36,7 +35,7 @@ class MarkedView(View):
     def uuid(self):
         if not hasattr(self, "__uuid__"):
             self.__uuid__ = UUID()
-            view_registry = getUtility(IViewRegistry)
+            view_registry = self.registry.getUtility(IViewRegistry)
             view_registry.register(self, self.__uuid__)
         return self.__uuid__
 
