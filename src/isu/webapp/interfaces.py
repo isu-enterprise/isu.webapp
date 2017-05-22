@@ -2,6 +2,7 @@
 from zope.interface import Interface, Attribute, implementer, directlyProvides
 from zope.i18nmessageid import MessageFactory
 import icc.mvw.interfaces
+import isu.enterprise.interfaces
 import zope.schema
 
 # Implementation - реализация
@@ -42,3 +43,7 @@ class IViewRegistry(Interface):
 
     def unregister(name):
         """Remove registration defined by `name`."""
+
+
+class IApplication (isu.enterprise.interfaces.IApplication):
+    pass

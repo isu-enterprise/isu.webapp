@@ -9,31 +9,38 @@
   <static
       name="bootstrap"
       path="isu.webapp:admin-lte/bootstrap"
+      cache_max_age="3600"
       />
   <static
       name="documentation"
       path="isu.webapp:admin-lte/documentation"
+      cache_max_age="3600"
       />
   <static
       name="pages"
       path="isu.webapp:admin-lte/pages"
+      cache_max_age="3600"
       />
   <static
       name="plugins"
       path="isu.webapp:admin-lte/plugins"
+      cache_max_age="3600"
       />
   <static
       name="dist"
       path="isu.webapp:admin-lte/dist"
+      cache_max_age="3600"
       />
   <static
       name="js"
       path="isu.webapp:admin-lte/js"
+      cache_max_age="3600"
       />
   <view
       route_name="home"
-      view=".webui.hello_world"
+      view=".app.hello_world"
       renderer="isu.webapp:templates/index.pt"
+      cache_max_age="3600"
       />
   <subscriber
       for="pyramid.events.BeforeRender"

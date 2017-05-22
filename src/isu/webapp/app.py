@@ -3,7 +3,7 @@
 from pyramid.config import Configurator
 from isu.enterprise.configurator import createConfigurator
 from zope.interface import directlyProvides
-from isu.webapp.interfaces import IConfigurationEvent
+from isu.webapp.interfaces import IConfigurationEvent, IApplication
 from isu.webapp.views import View
 from zope.i18nmessageid import MessageFactory
 
@@ -35,10 +35,13 @@ def main(global_config, **settings):
     config.include('pyramid_chameleon')
 
     directlyProvides(config, IConfigurationEvent)
-
     config.registry.notify(config)
 
     app = config.make_wsgi_app()
+    directlyProvides(app, IApplication)
+    config.registry.registerUtility(app, name="application")
+    config.registry.notify(app)
+
     return app
 
 
