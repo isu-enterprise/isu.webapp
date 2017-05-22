@@ -1,6 +1,7 @@
 # -e git+https://github.com/isu-enterprise/isu.enterprise#egg=isu.enterprise
 zope.component[zcml]
 zope.i18nmessageid
+waitress
 pyramid
 chameleon
 pyramid_chameleon

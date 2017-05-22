@@ -1,6 +1,7 @@
 nose
 zope.component[zcml]
 pyramid
+waitress
 chameleon
 pyramid_chameleon
 pyramid_debugtoolbar

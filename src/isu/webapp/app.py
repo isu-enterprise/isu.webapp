@@ -38,8 +38,7 @@ def main(global_config, **settings):
     config.registry.notify(config)
 
     app = config.make_wsgi_app()
-    directlyProvides(app, IApplication)
-    config.registry.registerUtility(app, name="application")
+    config.registry.registerUtility(app, IApplication, name="application")
     config.registry.notify(app)
 
     return app
