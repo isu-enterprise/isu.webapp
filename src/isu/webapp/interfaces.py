@@ -2,6 +2,7 @@
 from zope.interface import Interface, Attribute, implementer, directlyProvides
 from zope.i18nmessageid import MessageFactory
 import icc.mvw.interfaces
+import isu.enterprise.interfaces
 import zope.schema
 
 # Implementation - реализация
@@ -28,3 +29,7 @@ class IView(icc.mvw.interfaces.IView):
     registry = Attribute("The registry of the application")
 
     # FIXME: add title, menu item, etc.
+
+
+class IApplication (isu.enterprise.interfaces.IApplication):
+    pass
