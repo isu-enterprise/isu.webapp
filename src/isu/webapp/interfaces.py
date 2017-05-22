@@ -28,3 +28,17 @@ class IView(icc.mvw.interfaces.IView):
     registry = Attribute("The registry of the application")
 
     # FIXME: add title, menu item, etc.
+
+
+class IViewRegistry(Interface):
+    """Interface of a marked view registry"""
+
+    def register(view, name):
+        """Register the `view` instance under a `name`."""
+
+    def get(name, default=None):
+        """Find the `view` by its `name`.
+        Return `default`  value if none found."""
+
+    def unregister(name):
+        """Remove registration defined by `name`."""
