@@ -92,7 +92,7 @@ setup(
     test_suite='tests',
     entry_points="""\
         [paste.app_factory]
-        main=isu.webapp.webui:main
+        main=isu.webapp.app:main
     """,
     #ext_modules = cythonize(ext_modules),
     #test_suite = 'nose.collector',

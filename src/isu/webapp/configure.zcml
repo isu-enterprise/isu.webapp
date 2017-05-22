@@ -32,7 +32,7 @@
       />
   <view
       route_name="home"
-      view=".webui.hello_world"
+      view=".app.hello_world"
       renderer="isu.webapp:templates/index.pt"
       />
   <subscriber
