@@ -6,7 +6,7 @@ from zope.interface import directlyProvides
 from isu.webapp.interfaces import IConfigurationEvent, IApplication
 from isu.webapp.views import View
 from zope.i18nmessageid import MessageFactory
-
+from zope.component import getSiteManager, getGlobalSiteManager
 
 _ = _N = MessageFactory("isu.webapp")
 
@@ -27,7 +27,13 @@ def hello_world(request):
 def main(global_config, **settings):
     # show_environment()
     config = Configurator(settings=settings)
-    config.hook_zca()
+
+    # config.hook_zca()
+
+    globalreg = getGlobalSiteManager()
+    config = Configurator(registry=globalreg)
+    config.setup_registry(settings=settings)
+
     createConfigurator(global_config["__file__"],
                        registry=config.registry,
                        name="configuration")
