@@ -26,10 +26,11 @@ def hello_world(request):
 
 def main(global_config, **settings):
     # show_environment()
-
-    conf = createConfigurator(global_config["__file__"])
     config = Configurator(settings=settings)
     config.hook_zca()
+    createConfigurator(global_config["__file__"],
+                       registry=config.registry,
+                       name="configuration")
     config.include('pyramid_zcml')
     config.load_zcml('isu.webapp:configure.zcml')
     config.include('pyramid_chameleon')
