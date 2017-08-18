@@ -24,22 +24,24 @@ def hello_world(request):
     }
 
 
-def main(global_config, **settings):
-    # show_environment()
-    config = Configurator(settings=settings)
+def configurator(global_config, **settings):
 
-    # config.hook_zca()
-
-    globalreg = getGlobalSiteManager()
-    config = Configurator(registry=globalreg)
+    gsm = getGlobalSiteManager()
+    config = Configurator(registry=gsm, settings=settings)
     config.setup_registry(settings=settings)
 
     createConfigurator(global_config["__file__"],
                        registry=config.registry,
                        name="configuration")
+
     config.include('pyramid_zcml')
     config.load_zcml('isu.webapp:configure.zcml')
-    config.include('pyramid_chameleon')
+    # config.include('pyramid_chameleon')
+
+    return config
+
+
+def create_application(config):
 
     directlyProvides(config, IConfigurationEvent)
     config.registry.notify(config)
@@ -49,6 +51,16 @@ def main(global_config, **settings):
     config.registry.notify(app)
 
     return app
+
+
+def main(global_config, **settings):
+    # config.hook_zca()
+
+    config = configurator(global_config, **settings)
+
+    config.include('pyramid_chameleon')
+
+    return create_application(config)
 
 
 if __name__ == '__main__':
