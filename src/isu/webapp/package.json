@@ -4,7 +4,7 @@
   "description": "Installator for admin-lte",
   "main": "index.js",
   "dependencies": {
-    "admin-lte": "^2.3.11"
+    "admin-lte": "^2.4.8"
   },
   "repository": {
     "type": "git",
