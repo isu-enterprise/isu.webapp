@@ -1,26 +1,18 @@
 .PHONY: env dev develop install test edit \
 	py pot init-ru update-ru comp-cat \
 	upd-cat setup test setup-requs tests \
-	run-tests gdb-test clean serve server serv
+	run-tests gdb-test clean serve server serv \
+	template admin
 
-#A source dir of a local C/C++ library to link with
-#TOP_DIR=
 
-#A virtualenv name
-LPYTHON=qgis
-V=$(HOME)/.pyenv/versions/$(LPYTHON)
-#VB=$(V)/bin
-PYTHON=python
-#ROOT=$(PWD)
-#INI=isu.webapp
-#LCAT=src/isu.webapp/locale/
-
-#LG_DIR="link-grammar"
-#LG_LIB_DIR=$(TOP_DIR)/$(LG_DIR)/.libs
-#LG_HEADERS=$(TOP_DIR)
 
 server: serve
 serv: serve
+
+template:
+	(cd src/isu/webapp; ./install-admin-lte.sh)
+
+admin: template
 
 serve:
 	pserve development.ini --reload
