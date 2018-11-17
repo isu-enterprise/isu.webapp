@@ -6,37 +6,16 @@
       name="home"
       pattern="/"
       />
-  <static
-      name="bower_components"
-      path="isu.webapp:admin-lte/bower_components"
-      />
-  <static
-      name="documentation"
-      path="isu.webapp:admin-lte/documentation"
-      />
-  <static
-      name="pages"
-      path="isu.webapp:admin-lte/pages"
-      />
-  <static
-      name="plugins"
-      path="isu.webapp:admin-lte/plugins"
-      />
-  <static
-      name="dist"
-      path="isu.webapp:admin-lte/dist"
-      />
-  <static
-      name="js"
-      path="isu.webapp:admin-lte/js"
-      />
   <view
       route_name="home"
       view=".app.hello_world"
       renderer="isu.webapp:templates/index.pt"
       />
+
   <subscriber
       for="pyramid.events.BeforeRender"
       handler="isu.webapp.subscribers.add_base_template"
       />
+
+  <include package="isu.webapp" file="static-assets.zcml"/>
 </configure>
