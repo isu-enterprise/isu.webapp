@@ -12,7 +12,7 @@ _ = _N = MessageFactory("isu.webapp")
 
 
 class HomeView(View):
-    title = _N("ISU Enterprise Platform")
+    title = _N("ISU Enterprise WebApplication Platform")
 
 
 def hello_world(request):
@@ -33,12 +33,15 @@ def configurator(global_config, **settings):
     createConfigurator(global_config["__file__"],
                        registry=config.registry,
                        name="configuration")
-
-    config.include('pyramid_zcml')
-    config.load_zcml('isu.webapp:configure.zcml')
-    # config.include('pyramid_chameleon')
-
     return config
+
+def includeme(global_config, **settings): # Default webapp setup. DEMO
+
+    global_config.include('pyramid_zcml')
+    global_config.load_zcml('isu.webapp:configure.zcml')
+    global_config.include('pyramid_chameleon')
+
+    return global_config
 
 
 def create_application(config):
@@ -57,9 +60,6 @@ def main(global_config, **settings):
     # config.hook_zca()
 
     config = configurator(global_config, **settings)
-
-    config.include('pyramid_chameleon')
-
     return create_application(config)
 
 
