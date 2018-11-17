@@ -385,25 +385,26 @@
           <ul class="sidebar-menu" data-widget="tree">
             <li class="header" tal:condition="nothing">MAIN
               NAVIGATION</li>
-            <span tal:repeat="sb_item view.panel_items | []" tal:omit-tag=''>
-              <li class="active treeview">
-                <a href="#" tal:attributes="href sb_item.URL">
+            <span tal:repeat="sb_item view.panel_items() | view.panel_items | []" tal:omit-tag=''>
+              <li class="treeview" tal:attributes="class string:${sb_item.active(request)}">
+                <a href="#" tal:attributes="href sb_item.URL(request)">
                   <i class="fa fa-dashboard"
-                     tal:attributes="class string:fa ${sb_item.icon}"
+                     tal:attributes="class sb_item.icon"
+                     tal:condition="sb_item.icon"
                      ></i>
                   <span tal:replace="sb_item.name">Dashboard</span>
-                  <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right" tal:condition='nothing'></i>
+                  <span class="pull-right-container" tal:condition='nothing'>
+                    <i class="fa fa-angle-left pull-right"></i>
                   </span>
                 </a>
-                <ul class="treeview-menu" tal:condition="nothing" tal:condition='nothing'>
+                <ul class="treeview-menu" tal:condition="nothing">
                   <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
                   <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
                 </ul>
               </li>
             </span>
             <tal:block tal:condition="nothing">
-              <li class="treeview">
+              <li class="treeview"> <!-- TODO: Implement treeview support -->
                 <a href="#">
                   <i class="fa fa-files-o"></i>
                   <span>Layout Options</span>

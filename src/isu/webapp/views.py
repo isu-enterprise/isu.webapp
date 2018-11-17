@@ -1,11 +1,39 @@
 from zope.interface import implementer
-from .interfaces import IView, IViewRegistry
+from .interfaces import IView, IViewRegistry, IPanelItem
 import pyramid.threadlocal
 import uuid
+
+from zope.i18nmessageid import MessageFactory
+
+_ = MessageFactory("icc.quest")
 
 
 def UUID():
     return str(uuid.uuid1())
+
+
+@implementer(IPanelItem)
+class PanelItem(object):
+    def __init__(self, name, URL=None, route=None, icon=None):
+        if route is None and URL is None:
+            raise ValueError('either URL or route parameter must be specified')
+        self.name = name
+        self._URL = URL
+        self.route = route
+        self.icon = icon
+
+    def URL(self, request=None):
+        if self._URL is not None:
+            return self._URL
+        else:
+            return request.route_url(self.route)
+
+    def active(self, request):
+        if self.route is not None:
+            return 'active' if request.matched_route.name == self.route else ''
+        return 'active' if request.url == self._URL else ''
+
+    # TODO: Implement treeview class support in index.pt
 
 
 @implementer(IView)

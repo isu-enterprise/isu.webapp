@@ -24,7 +24,7 @@ class IView(icc.mvw.interfaces.IView):
     to a response
     """
 
-    cobtext = Attribute("The context object")
+    context = Attribute("The context object")
     request = Attribute("The request object")
     registry = Attribute("The registry of the application")
 
@@ -47,3 +47,10 @@ class IViewRegistry(Interface):
 
 class IApplication (isu.enterprise.interfaces.IApplication):
     pass
+
+
+class IPanelItem(Interface):
+    name = Attribute("Item name")
+    URL = Attribute("Absolute URL of the item page")
+    route = Attribute("Route name of the item page")
+    icon = Attribute("Name of an icon specification, e.g., 'fa fa-edit' ")
