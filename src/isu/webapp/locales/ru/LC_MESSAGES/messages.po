@@ -1,0 +1,44 @@
+#
+# SOME DESCRIPTIVE TITLE
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE 1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-11-18 14:20+0800\n"
+"PO-Revision-Date: 2018-11-18 14:01+0800\n"
+"Last-Translator: Evgeny Cherkashin <eugeneai@irnok.net>\n"
+"Language: ru\n"
+"Language-Team: Russian <RU@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: ./src/isu/webapp/upload.py:7
+msgid "File upload"
+msgstr "Загрузка файла"
+
+#: ./src/isu/webapp/upload.py:32
+msgid "check input form if it contains \"file\" field of type file"
+msgstr "проверьте форму ввода, содержит ли она поле \"file\" типа \"file\""
+
+#: ./src/isu/webapp/templates/upload-form.pt:14
+msgid "Drag & Drop Files Here"
+msgstr "Перемещайте файлы мышкой сюда"
+
+#: ./src/isu/webapp/templates/index.pt:331
+msgid "Profile"
+msgstr "Профиль"
+
+#: ./src/isu/webapp/templates/index.pt:337
+msgid "Sign out"
+msgstr "Выйти"
+
+#: ./src/isu/webapp/templates/index.pt:346
+msgid "Login or register new user"
+msgstr "Войти или зврегистрироваться"
+

@@ -1,0 +1,41 @@
+#
+# SOME DESCRIPTIVE TITLE
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE 1.0\n"
+"POT-Creation-Date: 2018-11-18 14:11+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language:  \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Lingua 4.13\n"
+
+#: ./src/isu/webapp/upload.py:7
+msgid "File upload"
+msgstr ""
+
+#: ./src/isu/webapp/upload.py:32
+msgid "check input form if it contains \"file\" field of type file"
+msgstr ""
+
+#: ./src/isu/webapp/templates/upload-form.pt:14
+msgid "Drag & Drop Files Here"
+msgstr ""
+
+#: ./src/isu/webapp/templates/index.pt:331
+msgid "Profile"
+msgstr ""
+
+#: ./src/isu/webapp/templates/index.pt:337
+msgid "Sign out"
+msgstr ""
+
+#: ./src/isu/webapp/templates/index.pt:346
+msgid "Login or register new user"
+msgstr ""

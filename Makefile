@@ -4,7 +4,7 @@
 	run-tests gdb-test clean serve server serv \
 	template admin
 
-
+LCAT=src/isu/webapp/locales
 
 server: serve
 serv: serve
@@ -18,22 +18,21 @@ serve:
 	pserve development.ini --reload
 
 env:
-	[ -d $(V) ] || virtualenv  $(V)
 	easy_install --upgrade pip
 
 pre-dev:env #dev-....
 	easy_install pip setuptools
 
 setup:
-	$(PYTHON) setup.py build_ext # -L$(LG_LIB_DIR) -R$(LG_LIB_DIR) -I$(LG_HEADERS)
-	$(PYTHON) setup.py develop
+	python setup.py build_ext # -L$(LG_LIB_DIR) -R$(LG_LIB_DIR) -I$(LG_HEADERS)
+	python setup.py develop
 
 dev:	pre-dev setup-requs setup # upd-cat
 
 develop: dev
 
 install: env comp-cat
-	$(PYTHON) setup.py install
+	python setup.py install
 
 edit:
 	cd src && emacs
@@ -49,24 +48,25 @@ tests:	run-tests
 test:	setup run-tests
 
 gdb-test: setup
-	gdb --args $(PYTHON) $(VB)/nosetests -w src/tests
+	gdb --args python nosetests -w src/tests
 
 py:
-	$(PYTHON)
+	python
+
 pot:
 	mkdir -p $(LCAT)
-	$(VB)/pot-create src -o $(LCAT)/messages.pot || echo "Someting unusual with pot."
+	# rm $(LCAT)/messages.pot
+	pot-create src -o $(LCAT)/messages.pot || echo "Someting unusual with pot."
+	sed -i 's/\"Language: \\n/"Language: en_US\\n/g' $(LCAT)/messages.pot
 
 init-ru:
-	$(PYTHON) setup.py init_catalog -l ru -i $(LCAT)/messages.pot \
-                         -d $(LCAT)
+	python setup.py init_catalog -l ru -i $(LCAT)/messages.pot -d $(LCAT)
 
 update-ru:
-	$(PYTHON) setup.py update_catalog -l ru -i $(LCAT)/messages.pot \
-                            -d $(LCAT)
+	python setup.py update_catalog -l ru -i $(LCAT)/messages.pot -d $(LCAT)
 
 comp-cat:
-	$(PYTHON) setup.py compile_catalog -d $(LCAT)
+	python setup.py compile_catalog -d $(LCAT)
 
 upd-cat: pot update-ru comp-cat
 

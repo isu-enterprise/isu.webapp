@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="isu.webapp"
       metal:use-macro="main.macros['page']">
 
     <tal:block metal:fill-slot="header-meta">
@@ -10,8 +11,7 @@
     </tal:block>
 
     <tal:block metal:fill-slot="content">
-      <h2 tal:content="view.title">File upload</h2>
-      <div id="dragandrophandler">Drag & Drop Files Here</div>
+      <div id="dragandrophandler" i18n:translate="">Drag & Drop Files Here</div>
       <br/><br/>
       <div id="status1"></div>
       <br/><br/>
