@@ -44,8 +44,7 @@
       attr="upload"
       />
   <static
-      name="/local/js"
-      path="isu.webapp:templates/js"
+      name="/static/upload"
+      path="isu.webapp:templates/static/upload"
       />
-
 </configure>
