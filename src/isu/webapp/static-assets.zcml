@@ -26,8 +26,4 @@
       name="js"
       path="isu.webapp:admin-lte/js"
       />
-  <static
-      name="local/js"
-      path="isu.webapp:template/js"
-      />
 </configure>

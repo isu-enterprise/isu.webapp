@@ -1,0 +1,15 @@
+<div
+  xmlns="http://www.w3.org/1999/xhtml"
+  xml:lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  xmlns:ntal="http://example.org/namespaces/ntal"
+  i18n:domain="isu.webapp"
+  tal:replace="structure view.content | default"
+  metal:define-macro="page"
+>
+<tal:slot metal:define-slot="content">
+<H1>Replace me (slot 'content') with a content.</H1>
+</tal:slot>
+</div>

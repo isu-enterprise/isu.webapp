@@ -77,27 +77,30 @@
         </style>
     </tal:block>
 
-  <tal:block metal:fill-slot="content">
-    <div id="dragandrophandler">Drag & Drop Files Here</div>
-    <br/><br/>
-    <div id="status1"></div>
-    <br/><br/>
-    <div id="doc_table" class="panel panel-default" ></div>
-  </tal:block>
+    <tal:block metal:fill-slot="content">
+      <h2 tal:content="view.title">File upload</h2>
+      <div id="dragandrophandler">Drag & Drop Files Here</div>
+      <br/><br/>
+      <div id="status1"></div>
+      <br/><br/>
+      <div id="doc_table" class="panel panel-default" ></div>
+    </tal:block>
 
   <tal:block metal:fill-slot="script-src">
-    <script type="text/javascript"
-            src="/local/js/doc-load-script.js"></script>
-    <script>
-      var uploadUrl="<span tal:replace='request.route_url('upload')'/>"
-      var docUrl="<span tal:replace='request.route_url('get-docs')'/>"
-      var doc_load_setup={{
+    <script id="script-data"
+      tal:attributes="data-upload_url request.route_url('upload');
+                      data-doc_url request.route_url('get-docs')">
+      var uploadUrl=$("#script-data").data('upload_url');
+      var docsUrl=$("#script-data").data('doc_url');
+      var doc_load_setup={
         uploadUrl:uploadUrl,
         docsUrl:docsUrl,
-        htmlReady:function(data){{
+        htmlReady:function(data){
           $("#doc_table").html(data);
-        }}
-      }};
+        }
+      };
     </script>
+    <script type="text/javascript"
+            src="/local/js/doc-load-script.js"></script>
   </tal:block>
 </html>

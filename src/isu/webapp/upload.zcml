@@ -40,8 +40,12 @@
       route_name="upload"
       renderer="json"
       request_method="POST"
-      view=".views.View"
+      view=".upload.View"
       attr="upload"
+      />
+  <static
+      name="/local/js"
+      path="isu.webapp:templates/js"
       />
 
 </configure>
