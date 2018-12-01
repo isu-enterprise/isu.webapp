@@ -57,6 +57,15 @@ class View(object):
         else:
             return pyramid.threadlocal.get_current_request()
 
+    def response(self, **kwargs):
+        resp = {
+            'view': self,
+            'context': self.context,
+            'request': self.request
+        }
+        resp.update(kwargs)
+        return resp
+
 
 class MarkedView(View):
     @property
