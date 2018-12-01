@@ -38,13 +38,22 @@ class PanelItem(object):
 
 @implementer(IView)
 class View(object):
+    """Adapter object of context (a model) and request
+    (a browser query) to a template.
+    """
 
     def __init__(self, context=None, request=None):
+        """Initializes the view as being adapter of
+        `context`, being a model, and
+        `request`, being a object reflecting query from client,
+        to a template.
+        """
         self.context = context
         self._request = request
 
     @property
     def registry(self):
+        """Registry property aoopted for testing."""
         if self._request is not None:
             return self._request.registry
         else:
@@ -52,12 +61,18 @@ class View(object):
 
     @property
     def request(self):
+        """Request property, which is taken either from request
+        or from thread local context to support testing.
+        """
         if self._request is not None:
             return self._request
         else:
             return pyramid.threadlocal.get_current_request()
 
     def response(self, **kwargs):
+        """Returns a dictionary of standard varibales.
+        `kwargs`: additional variables to be added.
+        """
         resp = {
             'view': self,
             'context': self.context,

@@ -27,8 +27,14 @@ class IView(icc.mvw.interfaces.IView):
     context = Attribute("The context object")
     request = Attribute("The request object")
     registry = Attribute("The registry of the application")
+    title = Attribute("Title of the View")  # are to be implemented
 
-    # FIXME: add title, menu item, etc.
+    def response(**kwargs):
+        """Returns a dictionary of standard varibales.
+        `kwargs`: additional variables to be added.
+        """
+
+    # FIXME: menu item, etc.
 
 
 class IViewRegistry(Interface):
