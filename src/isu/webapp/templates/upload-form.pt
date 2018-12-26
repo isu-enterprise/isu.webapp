@@ -6,7 +6,10 @@
       metal:use-macro="main.macros['page']">
 
     <tal:block metal:fill-slot="header-meta">
-      <link rel="stylesheet" href="/static/upload/css/doc-load.css">
+      <link rel="stylesheet"
+            href="/static/upload/css/doc-load.css"
+            tal:attributes="href request.static_url('isu.webapp:templates/static/upload/css/doc-load.css')"
+      >
 
     </tal:block>
 
@@ -20,8 +23,8 @@
 
   <tal:block metal:fill-slot="script-src">
     <script id="script-data"
-      tal:attributes="data-upload_url request.route_url('upload');
-                      data-doc_url request.route_url('get-docs')">
+      tal:attributes="data-upload_url request.route_url('file-upload');
+                      data-doc_url request.route_url('get-file-list')">
       var uploadUrl=$("#script-data").data('upload_url');
       var docsUrl=$("#script-data").data('doc_url');
       var doc_load_setup={
@@ -33,6 +36,8 @@
       };
     </script>
     <script type="text/javascript"
-            src="/static/upload/js/doc-load-script.js"></script>
+            src="/upload-static/upload/js/doc-load-script.js"
+            tal:attributes="src request.static_url('isu.webapp:templates/static/upload/js/doc-load-script.js')"
+    ></script>
   </tal:block>
 </html>
