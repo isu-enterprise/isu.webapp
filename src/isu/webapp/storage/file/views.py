@@ -1,5 +1,5 @@
 from zope.i18nmessageid import MessageFactory
-from .interfaces import IFileStorageView
+from .interfaces import IFileStorageView, IFileStorage
 from zope.interface import implementer
 from isu.webapp.storage.views import StorageView
 
@@ -40,21 +40,30 @@ class FileStorageView(StorageView):
                 _('check input form if it contains "file" field of type file')
             }
         self.file = file
+
         self.registry.notify(
             FileUploadEvent(file, request=self.request, view=self))
         if self.on_upload(file=file):
             return {'error': None, 'result': 'OK', 'filename': file.filename}
 
     def files(self, filter=None):
-        return self.objects(filter=filter)
+        storage = self._get_storage()
+        storage.set_session(self.registry.dbsession())
+        files = storage.files(filter=filter)
+        return self.response(files=files, context=files)
 
     def on_upload(self, file):
         """Run after file being uploaded to server.
-        Does nothing by default.
 
         Returns True if file upload post processing was successful,
         else raises an HTTPResponse exception.
 
         """
-        print("WARNING: File upload {}".format(file))
+        logger.debug("File upload event {}".format(file))
+        storage = self._get_storage()
+        storage.set_session(self.registry.dbsession())
+        storage.store(file)
         return True
+
+    def _get_storage(self):
+        return self.registry.getUtility(IFileStorage, 'file-storage')
