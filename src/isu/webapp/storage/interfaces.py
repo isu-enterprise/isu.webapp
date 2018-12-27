@@ -1,5 +1,6 @@
 from isu.webapp.interfaces import IView
 
+
 class IStorageView(IView):
     """A view with object storage functionality"""
 

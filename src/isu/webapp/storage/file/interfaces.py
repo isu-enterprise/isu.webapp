@@ -3,7 +3,9 @@ from isu.webapp.storage.interfaces import IStorageView
 
 
 class IFile(Interface):
-    name = Attribute("Name of the file")
+    name = Attribute("Full name of the file")
+    ext = Attribute('Extension part of the file, without the first dot')
+    base_name = Attribute("Base name of the file, i.e. name without extension")
     mime_type = Attribute("Mime type of the file")
     key = Attribute("Key identifier of the file")
     content = Attribute("Content of the file, bytes")
@@ -22,6 +24,10 @@ class IFileStorage(Interface):
     def set_session(session):
         """Informs receiver on the current session """
         # TODO: It is redundant
+
+    def load(key):
+        """Load IFile object by its key,
+        raises KeyError, if there is no such key"""
 
 
 class IFileStorageView(IStorageView):
